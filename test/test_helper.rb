@@ -9,6 +9,10 @@ require "minitest/reporters"
 
 Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
-require_relative 'block'
-require_relative 'calendar'
-require_relative 'reservation'
+require_relative '../lib/block'
+require_relative '../lib/calendar'
+require_relative '../lib/reservation'
+
+
+
+
