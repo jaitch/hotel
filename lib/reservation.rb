@@ -6,3 +6,8 @@ module Hotel
       @start_date = start_date
       @end_date = end_date
     end
+
+    def available_rooms
+      available_rooms = (1..20.to_a)
+    puts available_rooms
+    end
