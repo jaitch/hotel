@@ -5,13 +5,13 @@ describe "you can create a Reservation instance" do
     @new_reservation = Hotel::Reservation.new('2001-02-03', Date.today)
     expect (@new_reservation).must_be_instance_of Hotel::Reservation
   end
-  
+
   describe "exception thrower" do
     it "raises an ArgumentError if the end date is before the start date" do
       expect Hotel::Reservation.new(Date.today, '2001-02-03').must_raise ArgumentError
     end
     it "raises and ArgumentError if given an invalid date" do
-      expect Hotel::Reservation.new('2001-02-33', Date.today).must_raise ArgumentError
+      expect Hotel::Reservation.new(2001-02-33, Date.today).must_raise ArgumentError
     end
   end
 end
