@@ -4,24 +4,21 @@ require 'date'
 module Hotel
   attr_reader :start_date, :end_date
 
+  # Need to transform non-string dates?
   class Reservation
     def initialize start_date, end_date
       @start_date = Date.parse(start_date)
       @end_date = Date.parse(end_date)
 
-      # Catch invalid dates and date ranges
-      # if @start_date.class == String
-      #   @start_date = Date.parse(@start_date)
-      # end
-      # if @end_date.class == String
-      #   @end_date == Date.parse(@end_date)
-      # end
-      # if @start_date > @end_date
-      #   raise ArgumentError, "End date cannot be before start date."
-      # end
-      # if @start_date.valid_date? == false || @end_date.valid_date? == false
-      #   raise ArgumentError, "You must give valid dates."
-      # end
+      #Catch invalid dates and date ranges
+      if @start_date > @end_date
+        raise ArgumentError, "End date cannot be before start date."
+      end
+
+      # need to first convert dates to x, y, z
+      if Date.valid_date?(@start_date.year, @start_date.mon, @start_date.mday) == false || Date.valid_date?(@end_date.year, @end_date.mon, @end_date.mday) == false
+        raise ArgumentError, "You must give valid dates."
+      end
     end
 
     # Calculate time span of date ranges
