@@ -1,13 +1,26 @@
 require_relative 'date_range'
+require_relative 'room'
 require 'date'
 
 module Hotel
+  class Hotel
+    attr_reader  :num_rooms, :start_date, :end_date
 
-  # Need to transform non-string dates?
-  class Reservation
-    attr_reader :start_date, :end_date
+    def initialize num_rooms
+      @num_rooms = num_rooms
+    end
 
-    def initialize start_date, end_date
+    def make_rooms_array
+      all_rooms = []
+      room_num = 1
+      @num_rooms.times do
+        Hotel::Room.new(room_num)
+        room_num += 1
+      end
+      return all_rooms
+    end
+
+    def make_reservation(start_date, end_date)
       @start_date = Date.parse(start_date)
       @end_date = Date.parse(end_date)
 
@@ -15,13 +28,14 @@ module Hotel
         raise ArgumentError, "You must give valid dates."
       end
 
-      #Catch invalid dates and date ranges
       if @start_date > @end_date
         raise ArgumentError, "End date cannot be before start date."
       end
+      return true
     end
 
-    def make_reservation
+
+    #def make_reservation
       # find room that's available for that span
       # add these dates to that room's array of taken dates
       # calculate the cost of this reservation
@@ -32,6 +46,8 @@ module Hotel
       # def available_rooms
       #   @available_rooms = (1..20).to_a
       # end
-    end
+
+      # make sure one start date isn't before another's end date. can be same day.
+    #end
   end
 end
