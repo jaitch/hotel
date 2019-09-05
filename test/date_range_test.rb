@@ -2,12 +2,12 @@ require_relative 'test_helper'
 
 describe 'duration calculator' do
   it 'can calculate correct number of days given start date and end date' do
-    @new_reservation = Hotel::Reservation.new("2019-9-01", "2019-9-10")
-    expect(@new_reservation.duration).must_equal 9
+    @new_dates = Hotel::Date_Range.new("2019-9-01", "2019-9-10")
+    expect(@new_dates.duration).must_equal 9
   end
   it 'can caluclate correct number of days when start and end dates are in different months' do
-    @new_reservation = Hotel::Reservation.new("2019-8-29", "2019-9-01")
-    expect(@new_reservation.duration).must_equal 3
+    @new_dates = Hotel::Date_Range.new("2019-8-29", "2019-9-01")
+    expect(@new_dates.duration).must_equal 3
   end
 end
 

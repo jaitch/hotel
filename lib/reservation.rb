@@ -1,11 +1,12 @@
-require_relative 'calendar'
+require_relative 'date_range'
 require 'date'
 
 module Hotel
-  attr_reader :start_date, :end_date
 
   # Need to transform non-string dates?
   class Reservation
+    attr_reader :start_date, :end_date
+
     def initialize start_date, end_date
       @start_date = Date.parse(start_date)
       @end_date = Date.parse(end_date)
@@ -14,10 +15,10 @@ module Hotel
         raise ArgumentError, "You must give valid dates."
       end
 
-        #Catch invalid dates and date ranges
-        if @start_date > @end_date
-          raise ArgumentError, "End date cannot be before start date."
-        end
+      #Catch invalid dates and date ranges
+      if @start_date > @end_date
+        raise ArgumentError, "End date cannot be before start date."
+      end
     end
 
     def make_reservation
@@ -26,10 +27,11 @@ module Hotel
       # calculate the cost of this reservation
       # return room number and cost
 
-# method to search for reservation by start date
+      # method to search for reservation by start date
 
-    # def available_rooms
-    #   @available_rooms = (1..20).to_a
-    # end
+      # def available_rooms
+      #   @available_rooms = (1..20).to_a
+      # end
+    end
   end
 end
