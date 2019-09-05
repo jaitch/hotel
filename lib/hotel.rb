@@ -4,7 +4,7 @@ require 'date'
 
 module Hotel
   class Hotel
-    attr_reader  :num_rooms, :start_date, :end_date
+    attr_reader  :num_rooms, :start_date, :end_date, :all_rooms
 
     def initialize num_rooms
       @num_rooms = num_rooms
@@ -14,7 +14,7 @@ module Hotel
       all_rooms = []
       room_num = 1
       @num_rooms.times do
-        Hotel::Room.new(room_num)
+        all_rooms << Room.new(room_num)
         room_num += 1
       end
       return all_rooms

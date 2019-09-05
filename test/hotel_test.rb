@@ -8,21 +8,20 @@ end
 
 describe 'make_rooms_array' do
   let (:new_hotel) {
-    Hotel::Hotel::new(20)
+    Hotel::Hotel.new(20)
   }
   it 'makes an array of specified no. of rooms' do
-    expect(make_rooms_array.length).must_equal 20
+    expect(new_hotel.make_rooms_array.length).must_equal 20
   end
-    it 'is an array that contains Room instances' do
-    expect(@all_rooms[10]).must_be_instance_of Hotel::Room
-    expect(@all_rooms.last).must_be_instance_of Hotel::Room
+  it 'makes an array that contains instances of Room' do
+    (new_hotel.make_rooms_array.last).must_be_instance_of Hotel::Room
   end
 end
 
 describe 'make_reservation' do
   it "can be created" do
-    @new_reservation = Hotel::Hotel.make_reservation('2001-02-03', '2001-02-06')
-    expect (@new_reservation).must_be_kind_of Boolean
+    @new_reservation = Hotel::Hotel.new(20)
+    expect (@new_reservation.make_reservation('2001-02-03', '2001-02-06')).must_equal true
   end
 end
 
