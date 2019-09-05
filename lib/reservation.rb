@@ -10,24 +10,26 @@ module Hotel
       @start_date = Date.parse(start_date)
       @end_date = Date.parse(end_date)
 
-      #Catch invalid dates and date ranges
-      if @start_date > @end_date
-        raise ArgumentError, "End date cannot be before start date."
-      end
-
-      # need to first convert dates to x, y, z
-      if Date.valid_date?(@start_date.year, @start_date.mon, @start_date.mday) == false || Date.valid_date?(@end_date.year, @end_date.mon, @end_date.mday) == false
+      if Date.valid_date?(@start_date.year,@start_date.mon,@start_date.mday) == false || Date.valid_date?(@end_date.year,@end_date.mon,@end_date.mday) == false
         raise ArgumentError, "You must give valid dates."
       end
+
+        #Catch invalid dates and date ranges
+        if @start_date > @end_date
+          raise ArgumentError, "End date cannot be before start date."
+        end
     end
 
-    # Calculate time span of date ranges
-    def duration
-      (@end_date - @start_date)
-    end
+    def make_reservation
+      # find room that's available for that span
+      # add these dates to that room's array of taken dates
+      # calculate the cost of this reservation
+      # return room number and cost
 
-    def available_rooms
-      @available_rooms = (1..20).to_a
-    end
+# method to search for reservation by start date
+
+    # def available_rooms
+    #   @available_rooms = (1..20).to_a
+    # end
   end
 end
