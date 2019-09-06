@@ -31,6 +31,11 @@ module Hotel
       if @start_date > @end_date
         raise ArgumentError, "End date cannot be before start date."
       end
+    end
+  end
+end
+# helper method for validation?
+      # def validate_dates
 
       # all_rooms.each do |room|
       #   if room.empty?
@@ -53,6 +58,3 @@ module Hotel
 
       # make sure one start date isn't before another's end date. can be same day.
       #end
-    end
-  end
-end

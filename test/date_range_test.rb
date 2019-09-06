@@ -47,6 +47,14 @@ describe 'overlap?' do
     @ancient_history = Hotel::DateRange.new('1979-11-9', '1979-11-11')
     expect(existing_date_range.overlap?(@ancient_history)).must_equal false
   end
+  it "returns false for an end (checkout) date that is the same as an existing range's start (check-in)date" do
+    @housekeeping_bad_day = Hotel::DateRange.new('2019-8-25', '2019-9-1')
+    expect(existing_date_range.overlap?(@housekeeping_bad_day)).must_equal false
+  end
+  it "returns false for a start (check-in) date that is the same as an existing range's end (checkout) date" do
+    @housekeeping_bad_day = Hotel::DateRange.new('2019-9-10', '2019-9-19')
+    expect(existing_date_range.overlap?(@housekeeping_bad_day)).must_equal false
+  end
 end
 
   # describe "available_rooms" do
