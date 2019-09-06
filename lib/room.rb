@@ -7,9 +7,10 @@ module Hotel
 
     def initialize number
       @number = number
+      @occupied_date_ranges = occupied_date_ranges
     end
 
-  
+
 
 
   end

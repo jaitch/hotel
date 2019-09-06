@@ -11,6 +11,33 @@ describe 'duration calculator' do
   end
 end
 
+describe 'overlap?' do
+  let (:existing_date_range) {
+    @new_dates = Hotel::DateRange.new("2019-9-01", "2019-9-10")
+  }
+  it 'returns false when dates overlap at end of existing date range' do
+    @overlap_at_end = Hotel::DateRange.new("2019-9-8", "2019-9-12")
+    expect(existing_date_range.overlap?(@overlap_at_end)).must_equal false
+  end
+  it 'returns false when dates overlap at beginning of existing date range' do
+    @overlap_at_beg = Hotel::DateRange.new("2019-8-15", "2019-9-2")
+    expect(existing_date_range.overlap?(@overlap_at_beg)).must_equal false
+  end
+  it 'returns false when dates overlap exactly' do
+    @overlap_exactly = Hotel::DateRange.new("2019-9-1", "2019-9-10")
+    expect(existing_date_range.overlap?(@overlap_exactly)).must_equal false
+  end
+  it 'returns false when start dates are the same' do
+    @same_start_dates = Hotel::DateRange.new('2019-9-1', '2020-2-1')
+    expect(existing_date_range.overlap?(@same_start_dates)).must_equal false
+  end
+  it 'returns false when end dates are the same' do
+    @same_end_dates = Hotel::DateRange.new('2018-12-25', '2019-9-10')
+    expect(existing_date_range.overlap?(@same_end_dates)).must_equal false
+  end
+end
+
+
 # describe "available_rooms" do
 #   it "outputs list of room numbers when prompted" do
 #     expect(@new_reservation.available_rooms).must_be_kind_of Array

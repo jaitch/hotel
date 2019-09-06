@@ -31,11 +31,15 @@ module Hotel
       if @start_date > @end_date
         raise ArgumentError, "End date cannot be before start date."
       end
-      return true
-    end
+
+      # all_rooms.each do |room|
+      #   if room.empty?
+
+      #     return true
+      #   end
 
 
-    #def make_reservation
+
       # find room that's available for that span
       # add these dates to that room's array of taken dates
       # calculate the cost of this reservation
@@ -48,6 +52,7 @@ module Hotel
       # end
 
       # make sure one start date isn't before another's end date. can be same day.
-    #end
+      #end
+    end
   end
 end

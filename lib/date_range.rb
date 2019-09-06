@@ -14,24 +14,14 @@ module Hotel
       (@end_date - @start_date).to_i
     end
 
-    def available_rooms
-      @available_rooms = (1..20).to_a
+    def overlap?(other_date_range)
+      if self.end_date < other_date_range.end_date
+        return false
+      elsif self.start_date < other_date_range.end_date
+        return false
+      elsif self.start_date == other_date_range.start_date || self.end_date == other_date_range.end_date
+        return false
+      end
     end
-
-    # Store an array of reserved dates in each room
-    #
-    # def reservations_by_date(date)
-    #   @all_rooms = (1..20).to_a
-    #   @available_rooms = []
-    #   @unavailabe_rooms = []
-    #   @all_rooms.each do |room|
-    #     if room.include?(date)
-    #       @unavailabe_rooms << room
-    #     else
-    #       @available_rooms << room
-    #     end
-    #   end
-
-    # end
   end
 end
