@@ -11,17 +11,17 @@ describe 'make_rooms_array' do
     Hotel::Hotel.new(20)
   }
   it 'makes an array of specified no. of rooms' do
-    expect(new_hotel.make_rooms_array.length).must_equal 20
+    expect(new_hotel.all_rooms.length).must_equal 20
   end
   it 'makes an array that contains instances of Room' do
-    (new_hotel.make_rooms_array.last).must_be_instance_of Hotel::Room
+    (new_hotel.all_rooms.last).must_be_instance_of Hotel::Room
   end
 end
 
 describe 'make_reservation' do
   it "can be created" do
-    @new_reservation = Hotel::Hotel.new(20)
-    expect (@new_reservation.make_reservation('2001-02-03', '2001-02-06')).must_equal true
+    @new_hotel = Hotel::Hotel.new(20)
+    expect (@new_hotel.make_reservation('2001-02-03', '2001-02-06')).must_equal true
   end
 end
 
