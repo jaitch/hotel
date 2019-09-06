@@ -19,9 +19,23 @@ describe 'make_rooms_array' do
 end
 
 describe 'make_reservation' do
-  it "can be created" do
-    @new_hotel = Hotel::Hotel.new(20)
-    expect (@new_hotel.make_reservation('2001-02-03', '2001-02-06')).must_equal true
+  let (:hotel) {
+    @new_hotel = Hotel::Hotel.new(5)
+  }
+  it "makes a reservation" do
+    expect (hotel.make_reservation('2001-02-03', '2001-02-06')).must_equal true
+  end
+
+  it 'will skip over rooms if they are occupied for the given date' do
+    (hotel.make_reservation('2019-2-2', '2019-2-5'))
+    (hotel.make_reservation('2019-2-2', '2019-2-5'))
+    (hotel.make_reservation('2019-2-2', '2019-2-5'))
+    expect(hotel.all_rooms[0].occupied_date_ranges.length).must_equal 1
+    expect(hotel.all_rooms[1].occupied_date_ranges.length).must_equal 1
+    expect(hotel.all_rooms[2].occupied_date_ranges.length).must_equal 1
+    expect(hotel.all_rooms[3].occupied_date_ranges.length).must_equal 0
+  end
+  it "adds the succesfully made reservation to the correct room's occupied_date_ranges array" do
   end
 end
 
@@ -36,4 +50,3 @@ describe "exception thrower" do
     expect {Hotel::Hotel.new'2001-03-14', '2001-02-29'}.must_raise ArgumentError
   end
 end
-

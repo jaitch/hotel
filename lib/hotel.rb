@@ -27,6 +27,8 @@ module Hotel
 
       validate_dates(@start_date, @end_date)
       find_available_room(@all_rooms, @start_date, @end_date)
+      # if find_available_room(@all_rooms, @start_date, @end_date) == true
+      # elsif find_available_room(@all_rooms, @start_date, @end_date) == false
     end
 
     # helper method for validation
@@ -44,29 +46,23 @@ module Hotel
     def find_available_room(all_rooms, start_date, end_date)
       all_rooms.each do |room|
         if room.occupied_date_ranges.length == 0
+          room.occupied_date_ranges << DateRange.new(start_date.to_s, end_date.to_s)
           return true
         else
           room.occupied_date_ranges.each do |date_range|
             if date_range.overlap?(start_date, end_date) == false
+              room.occupied_date_ranges << DateRange.new(start_date.to_s, end_date.to_s)
               return true
             end
           end
         end
+      return false
       end
     end
 
   end
 end
-# all_rooms.each do |room|
-#   if room.empty?
 
-#     return true
-#   end
-
-
-
-# find room that's available for that span
-# add these dates to that room's array of taken dates
 # calculate the cost of this reservation
 # return room number and cost
 
