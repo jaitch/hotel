@@ -4,7 +4,7 @@ require 'date'
 
 module Hotel
   class Hotel
-    attr_reader  :num_rooms, :start_date, :end_date, :all_rooms
+    attr_reader  :num_rooms, :start_date, :end_date, :all_rooms, :available_rooms
 
     def initialize num_rooms
       @num_rooms = num_rooms
@@ -19,6 +19,10 @@ module Hotel
         all_rooms << Room.new(room_num)
         room_num += 1
       end
+    end
+
+    def list_rooms(rooms_array)
+      return rooms_array.map { |room| room.number }
     end
 
     def make_reservation(start_date, end_date)
@@ -71,12 +75,22 @@ module Hotel
       return amount_due
     end
 
+    def available_rooms_given_date(date_sought)
+      @date_sought = Date.parse(date_sought)
+      @available_rooms = []
+      @all_rooms.each do |room|
+        room.occupied_date_ranges.each do |range|
+          range = (range.start_date..range.end_date)
+          if range.include? @date_sought == false
+            @available_rooms << room
+          end
+        end
+      end
+      return @available_rooms
+    end
   end
 end
 
-
-# calculate the cost of this reservation
-# return room number and cost
 
 # method to search for reservation by start date
 

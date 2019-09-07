@@ -13,6 +13,7 @@ module Hotel
     def duration
       (@end_date - @start_date).to_i
     end
+
     # change to case-when??
     def overlap?(other_date_range)
       if self.end_date > other_date_range.start_date && other_date_range.start_date > self.start_date
@@ -32,5 +33,9 @@ module Hotel
       end
       return false
     end
+
+    # def date_included?(date_range, question_date)
+    #   date_range.include? question_date
+    # end
   end
 end
