@@ -44,23 +44,24 @@ module Hotel
 
     # helper method for finding room
     def find_available_room(all_rooms, start_date, end_date)
+      other_date_range = DateRange.new(start_date.to_s, end_date.to_s)
       all_rooms.each do |room|
         if room.occupied_date_ranges.length == 0
-          room.occupied_date_ranges << DateRange.new(start_date.to_s, end_date.to_s)
+          room.occupied_date_ranges << other_date_range
           return true
-        else
-          room.occupied_date_ranges.each do |date_range|
-            if date_range.overlap?(start_date, end_date) == false
-              room.occupied_date_ranges << DateRange.new(start_date.to_s, end_date.to_s)
-              return true
-            end
+        end
+
+        room.occupied_date_ranges.each do |date_range|
+          if date_range.overlap?(other_date_range) == false
+            room.occupied_date_ranges << other_date_range
+            return true
           end
         end
-      return false
       end
+      return false
     end
-
   end
+
 end
 
 # calculate the cost of this reservation
