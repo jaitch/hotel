@@ -34,7 +34,7 @@ describe 'make_reservation' do
   it "makes a successful reservation and returns amount due" do
     expect(hotel.make_reservation('2001-02-03', '2001-02-06')).must_include "Reservation booked. Amount due: $600."
   end
-  
+
   it 'will skip over rooms if they are occupied for the given date' do
     hotel.make_reservation('2019-2-2', '2019-2-5')
     hotel.make_reservation('2019-2-2', '2019-2-5')
@@ -52,7 +52,7 @@ describe 'make_reservation' do
     (hotel.make_reservation('2019-2-2', '2019-2-5'))
     (hotel.make_reservation('2019-2-2', '2019-2-5'))
     (hotel.make_reservation('2019-2-2', '2019-2-5'))
-    
+
     expect(hotel.make_reservation('2019-2-2', '2019-2-5')).must_include "Sorry. No available rooms for that date."
   end
 end
@@ -88,7 +88,8 @@ describe 'available_rooms_given_date' do
     hotel.make_reservation('2019-2-2', '2019-2-5')
     hotel.make_reservation('2019-2-2', '2019-2-5')
     hotel.make_reservation('2019-2-2', '2019-2-5')
-    hotel.make_reservation('2019-3-2', '2019-3-5')hotel.make_reservation('2019-4-2', '2019-4-5')
+    hotel.make_reservation('2019-3-2', '2019-3-5')
+    hotel.make_reservation('2019-4-2', '2019-4-5')
     expect(hotel.available_rooms_given_date('2001-2-3').length).must_equal 5
   end
 end

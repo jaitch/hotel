@@ -95,7 +95,3 @@ module Hotel
     end
   end
 end
-
-
-# method to search for reservation by start date
-
