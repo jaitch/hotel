@@ -1,15 +1,12 @@
 require_relative 'test_helper'
 
 describe 'you can create a Hotel instance' do
-  it 'can be created' do
-    expect(Hotel::Hotel::new(20)).must_be_instance_of Hotel::Hotel
-  end
-end
-
-describe 'make_rooms_array' do
   let (:new_hotel) {
     Hotel::Hotel.new(20)
   }
+  it 'can be created' do
+    expect(Hotel::Hotel::new(20)).must_be_instance_of Hotel::Hotel
+  end
   it 'makes an array of specified no. of rooms' do
     expect(new_hotel.all_rooms.length).must_equal 20
   end

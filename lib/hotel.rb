@@ -8,16 +8,7 @@ module Hotel
 
     def initialize num_rooms
       @num_rooms = num_rooms
-      make_rooms_array
-    end
-
-    def make_rooms_array
-      @all_rooms = []
-      room_num = 1
-      @num_rooms.times do
-        all_rooms << Room.new(room_num)
-        room_num += 1
-      end
+      @all_rooms = (1..@num_rooms).map {|num| Room.new(num)}
     end
 
     def list_rooms(rooms_array)
