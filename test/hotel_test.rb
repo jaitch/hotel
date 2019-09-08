@@ -92,9 +92,29 @@ describe 'available_rooms_given_date' do
     hotel.make_reservation('2019-4-2', '2019-4-5')
     expect(hotel.available_rooms_given_date('2001-2-3').length).must_equal 5
   end
+  it 'if a room has an end date equal to the queried date, it IS included in the available rooms' do
+    hotel.make_reservation('2019-2-5', '2019-2-15')
+    expect(hotel.available_rooms_given_date('2019-2-15').length).must_equal 5
+  end
+  it 'if a room has a start date equal to the queried date, it IS NOT included in the available rooms' do
+    hotel.make_reservation('2019-2-2', '2019-2-6')
+    expect(hotel.available_rooms_given_date('2019-2-2').length).must_equal 4
+  end
 end
 
-describe 'booked_reservations' do
-  it 'lists booked reservations for a given date' do
+describe 'list_reservations_given_date' do
+  let (:hotel) {
+    @new_hotel = Hotel::Hotel.new(3)
+  }
+  it 'returns hash of date ranges and room #s for reservations occupying a given date' do
+    hotel.make_reservation('2019-2-2', '2019-2-5')
+    hotel.make_reservation('2019-2-1', '2019-2-6')
+    hotel.make_reservation('2019-2-3', '2019-2-7')
+    hotel.make_reservation('2019-3-1', '2019-3-7')
+    hotel.make_reservation('2019-3-5', '2019-3-6')
+    expect(hotel.list_reservations_given_date('2019-2-4')).must_be_kind_of Hash
+    expect(hotel.list_reservations_given_date('2019-3-3').length).must_equal 2
+    expect(hotel.list_reservations_given_date('2019-2-4').values).must_equal [1, 2, 3]
+
   end
 end

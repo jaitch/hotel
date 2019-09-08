@@ -9,12 +9,10 @@ module Hotel
       @end_date = Date.parse(end_date)
     end
 
-    # Calculate time span of date ranges
     def duration
       (@end_date - @start_date).to_i
     end
 
-    # change to case-when??
     def overlap?(other_date_range)
       if self.end_date > other_date_range.start_date && other_date_range.start_date > self.start_date
         return true
@@ -34,8 +32,5 @@ module Hotel
       return false
     end
 
-    # def date_included?(date_range, question_date)
-    #   date_range.include? question_date
-    # end
   end
 end
