@@ -74,7 +74,7 @@ module Hotel
       return amount_due
     end
 
-    # I am assuming that someone might seek a date/look for available rooms for that date as a start date, but not as an end date. Therefore, I am including rooms with reservations that check out on the date sought on the list of available rooms.
+    # I am assuming that someone might seek a date/look for available rooms for that date as a start date, but not as an end date. Therefore, I am including rooms that open up (that have reservations ending) on the date sought on the list of available rooms.
     def available_rooms_given_date(date_sought)
       @date_sought = Date.parse(date_sought)
       @available_rooms = []
@@ -100,13 +100,12 @@ module Hotel
       @all_rooms.each do |room|
         room.occupied_date_ranges.each do |range|
           @cur_range = Range.new(range.start_date, range.end_date)
-          if (cur_range.include? (@date_sought)) == true
+          if (@cur_range.include? (@date_sought)) == true
             @reservations[range] = room.number
           end
         end
-        p @reservations
-        return @reservations
       end
+      return @reservations
     end
   end
 end

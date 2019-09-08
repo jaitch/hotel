@@ -113,7 +113,7 @@ describe 'list_reservations_given_date' do
     hotel.make_reservation('2019-3-1', '2019-3-7')
     hotel.make_reservation('2019-3-5', '2019-3-6')
     expect(hotel.list_reservations_given_date('2019-2-4')).must_be_kind_of Hash
-    expect(hotel.list_reservations_given_date('2019-3-3').length).must_equal 2
+    expect(hotel.list_reservations_given_date('2019-3-5').length).must_equal 2
     expect(hotel.list_reservations_given_date('2019-2-4').values).must_equal [1, 2, 3]
 
   end
