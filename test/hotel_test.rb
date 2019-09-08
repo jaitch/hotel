@@ -34,7 +34,7 @@ describe 'make_reservation' do
   it "makes a successful reservation and returns amount due" do
     expect(hotel.make_reservation('2001-02-03', '2001-02-06')).must_include "Reservation booked. Amount due: $600."
   end
-
+  
   it 'will skip over rooms if they are occupied for the given date' do
     hotel.make_reservation('2019-2-2', '2019-2-5')
     hotel.make_reservation('2019-2-2', '2019-2-5')
@@ -52,7 +52,7 @@ describe 'make_reservation' do
     (hotel.make_reservation('2019-2-2', '2019-2-5'))
     (hotel.make_reservation('2019-2-2', '2019-2-5'))
     (hotel.make_reservation('2019-2-2', '2019-2-5'))
-
+    
     expect(hotel.make_reservation('2019-2-2', '2019-2-5')).must_include "Sorry. No available rooms for that date."
   end
 end
@@ -73,17 +73,27 @@ describe 'available_rooms_given_date' do
   let (:hotel) {
     @new_hotel = Hotel::Hotel.new(5)
   }
-  it 'lists available rooms given a date' do
+  it 'lists available rooms (by room number) given a date' do
     hotel.make_reservation('2019-2-2', '2019-2-5')
-    (hotel.make_reservation('2019-2-2', '2019-2-5'))
-    (hotel.make_reservation('2019-2-2', '2019-2-5'))
-    p hotel.available_rooms_given_date('2019-2-4')
-    expect hotel.available_rooms_given_date('2019-2-4').must_be_instance_of Array
-    expect hotel.available_rooms_given_date('2019-2-4').length.must_equal 2
-
+    hotel.make_reservation('2019-2-2', '2019-2-5')
+    hotel.make_reservation('2019-2-2', '2019-2-5')
+    hotel.available_rooms_given_date('2019-2-6')
+    expect(hotel.available_rooms_given_date('2019-2-6')).must_be_instance_of Array
+    expect(hotel.available_rooms_given_date('2019-2-6').length).must_equal 5
+    expect(hotel.available_rooms_given_date('2019-2-4').length).must_equal 2
+  end
+  it "doesn't include a room number more than once for a date" do
+    hotel.make_reservation('2019-2-2', '2019-2-5')
+    hotel.make_reservation('2019-2-2', '2019-2-5')
+    hotel.make_reservation('2019-2-2', '2019-2-5')
+    hotel.make_reservation('2019-2-2', '2019-2-5')
+    hotel.make_reservation('2019-2-2', '2019-2-5')
+    hotel.make_reservation('2019-3-2', '2019-3-5')hotel.make_reservation('2019-4-2', '2019-4-5')
+    expect(hotel.available_rooms_given_date('2001-2-3').length).must_equal 5
   end
 end
 
 describe 'booked_reservations' do
-  it 'lists booked reservations for a given date'
+  it 'lists booked reservations for a given date' do
+  end
 end

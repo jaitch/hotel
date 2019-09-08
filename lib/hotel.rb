@@ -79,14 +79,19 @@ module Hotel
       @date_sought = Date.parse(date_sought)
       @available_rooms = []
       @all_rooms.each do |room|
-        room.occupied_date_ranges.each do |range|
-          range = (range.start_date..range.end_date)
-          if range.include? @date_sought == false
-            @available_rooms << room
+        if room.occupied_date_ranges.length == 0
+          @available_rooms << room
+        else
+          room.occupied_date_ranges.each do |range|
+            @cur_range = Range.new(range.start_date, range.end_date)
+            if ((@cur_range.include? (@date_sought)) == false)
+              @available_rooms << room
+            end
           end
         end
       end
-      return @available_rooms
+      @available_rooms.uniq!
+      return list_rooms(@available_rooms)
     end
   end
 end
