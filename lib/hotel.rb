@@ -43,7 +43,7 @@ module Hotel
 
       if available_rooms_given_date_range(start_date, end_date).length >= num_rooms
         (@available_rooms)[0...num_rooms].map {|room|room.blocks << @pending_date_range}
-        return "We have set aside rooms #{list_rooms(@available_rooms)[0...num_rooms]} for you. They are available to reserve at a 20% discount."
+        return "We have set aside rooms #{list_rooms((@available_rooms)[0...num_rooms])} for you. They are available to reserve at a 20% discount."
       end
     end
 
@@ -97,12 +97,12 @@ module Hotel
               @available_rooms << room
             end
           end
-          room.blocks.each do |range|
-            @cur_range = Range.new(range.start_date, range.end_date-1)
-            if (@cur_range.include? (@date_sought)) == true
-              @available.tap(&:pop) if @available != nil
-            end
-          end
+          # room.blocks.each do |range|
+          #   @cur_range = Range.new(range.start_date, range.end_date-1)
+          #   if (@cur_range.include? (@date_sought)) == true && @available != nil && @available[-1] == room
+          #     @available.tap(&:pop)
+          #   end
+          # end
         end
       end
       @available_rooms.uniq!
@@ -122,12 +122,12 @@ module Hotel
               @available_rooms << room
             end
           end
-          room.blocks.each do |range|
-            @cur_range = Range.new(range.start_date, range.end_date-1)
-            if (range.overlap? (@date_range_sought)) == true
-              @available.tap(&:pop) if @available != nil
-            end
-          end
+          # room.blocks.each do |range|
+          #   @cur_range = Range.new(range.start_date, range.end_date-1)
+          #   if (range.overlap? (@date_range_sought)) == true && @available != nil && @available[-1] == room
+          #     @available.tap(&:pop) if @available != nil
+          #   end
+          # end
         end
       end
       @available_rooms.uniq!
