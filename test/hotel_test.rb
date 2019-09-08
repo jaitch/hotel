@@ -102,6 +102,19 @@ describe 'available_rooms_given_date' do
   end
 end
 
+describe 'available_rooms_given_date_range' do
+  let (:hotel) {
+    @new_hotel = Hotel::Hotel.new(5)
+  }
+  it 'returns a list of rooms available for an entire date range' do
+    hotel.make_reservation('2019-3-10', '2019-3-30')
+    hotel.make_reservation('2019-3-1', '2019-3-10')
+    hotel.make_reservation('2019-3-15', '2019-4-10')
+    hotel.make_reservation('2019-3-5', '2019-3-9')
+    expect(hotel.available_rooms_given_date_range('2019-3-4', '2019-3-11')).length.must_equal 2
+  end
+end
+
 describe 'list_reservations_given_date' do
   let (:hotel) {
     @new_hotel = Hotel::Hotel.new(3)
