@@ -115,6 +115,5 @@ describe 'list_reservations_given_date' do
     expect(hotel.list_reservations_given_date('2019-2-4')).must_be_kind_of Hash
     expect(hotel.list_reservations_given_date('2019-3-5').length).must_equal 2
     expect(hotel.list_reservations_given_date('2019-2-4').values).must_equal [1, 2, 3]
-
   end
 end
