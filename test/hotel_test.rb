@@ -77,6 +77,10 @@ describe 'make_room_block_reservation' do
       expect(hotel.make_reservation('2019-2-1', '2019-2-10')).must_include "Sorry"
     end
     it 'enables rooms within a block to be booked individually by room number, and that reservation duration is in keeping with the block duration' do
+      hotel.make_room_block(5, '2019-2-1', '2019-2-10')
+      hotel.book_a_room
+    end
+    it 'does not allow a particular in a block to be booked more than once' do
     end
     it 'provides a discounted rate for rooms reserved from the block' do
     end

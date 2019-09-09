@@ -15,7 +15,7 @@ module Hotel
       return rooms_array.map { |room| room.number }
     end
 
-    def make_reservation(start_date, end_date, rate: 200)
+    def make_reservation(start_date, end_date)
       @start_date = Date.parse(start_date)
       @end_date = Date.parse(end_date)
       @pending_date_range = DateRange.new(start_date.to_s, end_date.to_s)
@@ -24,7 +24,7 @@ module Hotel
 
       if available_rooms_given_date_range(start_date, end_date).length > 0
         available_rooms[0].occupied_date_ranges << @pending_date_range
-        return "Reservation booked. Amount due: $#{calculate_cost(@pending_date_range, rate)}."
+        return "Reservation booked. Amount due: $#{calculate_cost(@pending_date_range, rate = 200)}."
       elsif available_rooms_given_date_range(start_date, end_date).length == 0
         return "Sorry. No available rooms for that date."
       end
@@ -53,8 +53,13 @@ module Hotel
     def book_a_room_in_an_existing_block(room_num, start_date, end_date)
       @room_num = room_num
       date_range = DateRange.new(start_date, end_date)
+      validate_dates(date_range)
       if all_rooms[room_num].blocks.include? (date_range)
-        make_reservation(start_date, end_date, rate: 160)
+        all_rooms[room_num].occupied_date_ranges << date_range
+        all_rooms[room_num].blocks - date_range
+        return "Reservation booked. Amount due: $#{calculate_cost(date_range, rate = 160)}."
+      else
+        return "Sorry. That room is not available at the block rate for those dates."
       end
     end
 
@@ -68,36 +73,6 @@ module Hotel
         raise ArgumentError, "End date cannot be before start date."
       end
     end
-
-    # helper method for finding room
-    # def find_available_room(all_rooms, pending_date_range)
-    #   @available_rooms = available_rooms
-    #   all_rooms.each do |room|
-    #     if room.occupied_date_ranges.length == 0 && room.blocks.length == 0
-    #       @available_rooms << room
-    #       return @available_rooms
-    #     end
-
-    #     room.occupied_date_ranges.each do |date_range|
-    #       if date_range.overlap?(@pending_date_range) == false
-    #         # room.occupied_date_ranges << @pending_date_range
-    #         # return true
-    #       end
-    #     end
-    #     room.occupied_date_ranges.each do |range|
-    #       if (range.overlap?(@date_range_sought)) == false
-    #         @available_rooms << room
-    #       end
-    #     end
-    #     room.blocks.each do |range|
-    #       @cur_range = Range.new(range.start_date, range.end_date-1)
-    #       if (range.overlap? (@date_range_sought)) == true && @available != nil && @available[-1] == room
-    #         @available.tap(&:pop) if @available != nil
-    #       end
-    #     end
-    #   end
-    #   return false
-    # end
 
     # helper method for calculating cost
     def calculate_cost(pending_date_range, rate)
@@ -131,7 +106,6 @@ module Hotel
       return list_rooms(@available_rooms)
     end
 
-    # This is just for checking for available rooms; not for booking. It does not add searched-for date range to occupied arrays
     def available_rooms_given_date_range(start_date, end_date)
       @date_range_sought = DateRange.new(start_date, end_date)
       @available_rooms = []
