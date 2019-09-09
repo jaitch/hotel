@@ -60,19 +60,21 @@ describe 'make_room_block_reservation' do
     @new_hotel = Hotel::Hotel.new(6)
   }
     it 'returns a rejection of asked for more than five rooms' do
-      expect(hotel.make_room_block_reservation(6, '2019-10-1', '2019-10-15')).must_include "Sorry."
+      expect(hotel.make_room_block(6, '2019-10-1', '2019-10-15')).must_include "Sorry."
     end
     it 'adds the block dates to the block array within Room' do
-      hotel.make_room_block_reservation(3, '2019-10-1', '2019-10-15')
+      hotel.make_room_block(3, '2019-10-1', '2019-10-15')
       expect(hotel.all_rooms[0].blocks.length).must_equal 1
     end
     it "raises an exception if there aren't enough rooms available for the block requested" do
       hotel.make_reservation('2019-2-2', '2019-2-5')
       hotel.make_reservation('2019-2-2', '2019-2-5')
-      expect(hotel.make_room_block_reservation(5, '2019-2-1', '2019-2-10')).must_include "Sorry"
-
+      expect(hotel.make_room_block(5, '2019-2-1', '2019-2-10')).must_include "Sorry"
     end
     it 'does not allow the rooms and dates set aside for the block to be reserved by regular means' do
+      hotel.make_room_block(5, '2019-2-1', '2019-2-10')
+      hotel.make_reservation('2019-2-1', '2019-2-10')
+      expect(hotel.make_reservation('2019-2-1', '2019-2-10')).must_include "Sorry"
     end
     it 'enables rooms within a block to be booked individually by room number, and that reservation duration is in keeping with the block duration' do
     end
@@ -133,7 +135,7 @@ describe 'make_room_block_reservation' do
     end
     it 'does not include rooms set aside in blocks in the available rooms' do
       hotel.make_reservation('2019-3-2', '2019-3-5')
-      hotel.make_room_block_reservation(3, '2019-3-1', '2019-3-10')
+      hotel.make_room_block(3, '2019-3-1', '2019-3-10')
       expect(hotel.available_rooms_given_date('2019-3-3').length).must_equal 1
     end
   end
@@ -152,7 +154,7 @@ describe 'make_room_block_reservation' do
     it 'does not include rooms reserved in a block in rooms available' do
       hotel.make_reservation('2019-3-10', '2019-3-30')
       hotel.make_reservation('2019-3-1', '2019-3-10')
-      hotel.make_room_block_reservation(3, '2019-3-1', '2019-3-19')
+      hotel.make_room_block(3, '2019-3-1', '2019-3-19')
       expect(hotel.available_rooms_given_date_range('2019-3-2', '2019-3-13').length).must_equal 1
     end
   end

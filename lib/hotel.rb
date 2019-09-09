@@ -22,14 +22,15 @@ module Hotel
 
       validate_dates(@pending_date_range)
 
-      if find_available_room(@all_rooms, @pending_date_range) == true
+      if available_rooms_given_date_range(start_date, end_date).length > 0
+        available_rooms[0].occupied_date_ranges << @pending_date_range
         return "Reservation booked. Amount due: $#{calculate_cost(@pending_date_range, rate)}."
-      elsif find_available_room(@all_rooms, @pending_date_range) == false
+      elsif available_rooms_given_date_range(start_date, end_date).length == 0
         return "Sorry. No available rooms for that date."
       end
     end
 
-    def make_room_block_reservation(num_rooms, start_date, end_date)
+    def make_room_block(num_rooms, start_date, end_date)
       @num_rooms = num_rooms
       @start_date = Date.parse(start_date)
       @end_date = Date.parse(end_date)
@@ -69,22 +70,34 @@ module Hotel
     end
 
     # helper method for finding room
-    def find_available_room(all_rooms, pending_date_range)
-      all_rooms.each do |room|
-        if room.occupied_date_ranges.length == 0
-          room.occupied_date_ranges << pending_date_range
-          return true
-        end
+    # def find_available_room(all_rooms, pending_date_range)
+    #   @available_rooms = available_rooms
+    #   all_rooms.each do |room|
+    #     if room.occupied_date_ranges.length == 0 && room.blocks.length == 0
+    #       @available_rooms << room
+    #       return @available_rooms
+    #     end
 
-        room.occupied_date_ranges.each do |date_range|
-          if date_range.overlap?(@pending_date_range) == false
-            room.occupied_date_ranges << @pending_date_range
-            return true
-          end
-        end
-      end
-      return false
-    end
+    #     room.occupied_date_ranges.each do |date_range|
+    #       if date_range.overlap?(@pending_date_range) == false
+    #         # room.occupied_date_ranges << @pending_date_range
+    #         # return true
+    #       end
+    #     end
+    #     room.occupied_date_ranges.each do |range|
+    #       if (range.overlap?(@date_range_sought)) == false
+    #         @available_rooms << room
+    #       end
+    #     end
+    #     room.blocks.each do |range|
+    #       @cur_range = Range.new(range.start_date, range.end_date-1)
+    #       if (range.overlap? (@date_range_sought)) == true && @available != nil && @available[-1] == room
+    #         @available.tap(&:pop) if @available != nil
+    #       end
+    #     end
+    #   end
+    #   return false
+    # end
 
     # helper method for calculating cost
     def calculate_cost(pending_date_range, rate)
@@ -106,12 +119,12 @@ module Hotel
               @available_rooms << room
             end
           end
-          # room.blocks.each do |range|
-          #   @cur_range = Range.new(range.start_date, range.end_date-1)
-          #   if (@cur_range.include? (@date_sought)) == true && @available != nil && @available[-1] == room
-          #     @available.tap(&:pop)
-          #   end
-          # end
+          room.blocks.each do |range|
+            @cur_range = Range.new(range.start_date, range.end_date-1)
+            if (@cur_range.include? (@date_sought)) == true && @available != nil && @available[-1] == room
+              @available.tap(&:pop)
+            end
+          end
         end
       end
       @available_rooms.uniq!
@@ -131,12 +144,12 @@ module Hotel
               @available_rooms << room
             end
           end
-          # room.blocks.each do |range|
-          #   @cur_range = Range.new(range.start_date, range.end_date-1)
-          #   if (range.overlap? (@date_range_sought)) == true && @available != nil && @available[-1] == room
-          #     @available.tap(&:pop) if @available != nil
-          #   end
-          # end
+          room.blocks.each do |range|
+            @cur_range = Range.new(range.start_date, range.end_date-1)
+            if (range.overlap? (@date_range_sought)) == true && @available != nil && @available[-1] == room
+              @available.tap(&:pop) if @available != nil
+            end
+          end
         end
       end
       @available_rooms.uniq!
