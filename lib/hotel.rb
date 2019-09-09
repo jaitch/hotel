@@ -45,22 +45,23 @@ module Hotel
       if available_rooms_given_date_range(start_date, end_date).length >= num_rooms
         (@available_rooms)[0...num_rooms].map {|room|room.blocks << @pending_date_range}
         return "We have set aside rooms #{list_rooms((@available_rooms)[0...num_rooms])} for you. They are available to reserve at a 20% discount."
-      elsif available_rooms_given_date_range(start_date, end_date).length < num_rooms
+      elsif available_rooms_given_date_range(@start_date, @end_date).length < num_rooms
         return "Sorry. We don't have that many rooms available for that date."
       end
     end
 
     def book_a_room_in_an_existing_block(room_num, start_date, end_date)
-      @room_num = room_num
-      date_range = DateRange.new(start_date, end_date)
-      validate_dates(date_range)
-      if all_rooms[room_num].blocks.include? (date_range)
-        all_rooms[room_num].occupied_date_ranges << date_range
-        all_rooms[room_num].blocks - date_range
-        return "Reservation booked. Amount due: $#{calculate_cost(date_range, rate = 160)}."
-      else
-        return "Sorry. That room is not available at the block rate for those dates."
+      @room_index = room_num-1
+      @date_range = DateRange.new(start_date, end_date)
+      validate_dates(@date_range)
+      all_rooms[@room_index].blocks.each do |block|
+        if block.start_date == @date_range.start_date && block.end_date == @date_range.end_date
+          all_rooms[@room_index].occupied_date_ranges << @date_range
+          all_rooms[@room_index].blocks.delete(block)
+          return "Reservation booked. Amount due: $#{calculate_cost(@date_range, rate = 160)}."
+        end
       end
+      return "Sorry. That room is not available at the block rate for those dates."
     end
 
     # helper method for validation
@@ -80,7 +81,6 @@ module Hotel
       return amount_due
     end
 
-    # I am assuming that someone might seek a date/look for available rooms for that date as a start date, but not as an end date. Therefore, I am including rooms that open up (that have reservations ending) on the date sought on the list of available rooms.
     def available_rooms_given_date(date_sought)
       @date_sought = Date.parse(date_sought)
       @available_rooms = []
@@ -107,7 +107,7 @@ module Hotel
     end
 
     def available_rooms_given_date_range(start_date, end_date)
-      @date_range_sought = DateRange.new(start_date, end_date)
+      @date_range_sought = DateRange.new(start_date.to_s, end_date.to_s)
       @available_rooms = []
       @all_rooms.each do |room|
         if room.occupied_date_ranges.length == 0 && room.blocks.length == 0
@@ -120,8 +120,8 @@ module Hotel
           end
           room.blocks.each do |range|
             @cur_range = Range.new(range.start_date, range.end_date-1)
-            if (range.overlap? (@date_range_sought)) == true && @available != nil && @available[-1] == room
-              @available.tap(&:pop) if @available != nil
+            if (range.overlap? (@date_range_sought)) == true && @available_rooms != nil && @available_rooms[-1] == room
+              @available_rooms.tap(&:pop)
             end
           end
         end
