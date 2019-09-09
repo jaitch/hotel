@@ -15,7 +15,7 @@ module Hotel
       return rooms_array.map { |room| room.number }
     end
 
-    def make_reservation(start_date, end_date)
+    def make_reservation(start_date, end_date, rate: 200)
       @start_date = Date.parse(start_date)
       @end_date = Date.parse(end_date)
       @pending_date_range = DateRange.new(start_date.to_s, end_date.to_s)
@@ -23,7 +23,7 @@ module Hotel
       validate_dates(@pending_date_range)
 
       if find_available_room(@all_rooms, @pending_date_range) == true
-        return "Reservation booked. Amount due: $#{calculate_cost(@pending_date_range)}."
+        return "Reservation booked. Amount due: $#{calculate_cost(@pending_date_range, rate)}."
       elsif find_available_room(@all_rooms, @pending_date_range) == false
         return "Sorry. No available rooms for that date."
       end
@@ -44,6 +44,16 @@ module Hotel
       if available_rooms_given_date_range(start_date, end_date).length >= num_rooms
         (@available_rooms)[0...num_rooms].map {|room|room.blocks << @pending_date_range}
         return "We have set aside rooms #{list_rooms((@available_rooms)[0...num_rooms])} for you. They are available to reserve at a 20% discount."
+      elsif available_rooms_given_date_range(start_date, end_date).length < num_rooms
+        return "Sorry. We don't have that many rooms available for that date."
+      end
+    end
+
+    def book_a_room_in_an_existing_block(room_num, start_date, end_date)
+      @room_num = room_num
+      date_range = DateRange.new(start_date, end_date)
+      if all_rooms[room_num].blocks.include? (date_range)
+        make_reservation(start_date, end_date, rate: 160)
       end
     end
 
@@ -77,8 +87,7 @@ module Hotel
     end
 
     # helper method for calculating cost
-    def calculate_cost(pending_date_range)
-      rate = 200
+    def calculate_cost(pending_date_range, rate)
       amount_due = rate * pending_date_range.duration
       return amount_due
     end

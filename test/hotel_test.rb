@@ -67,13 +67,20 @@ describe 'make_room_block_reservation' do
       expect(hotel.all_rooms[0].blocks.length).must_equal 1
     end
     it "raises an exception if there aren't enough rooms available for the block requested" do
-      
+      hotel.make_reservation('2019-2-2', '2019-2-5')
+      hotel.make_reservation('2019-2-2', '2019-2-5')
+      expect(hotel.make_room_block_reservation(5, '2019-2-1', '2019-2-10')).must_include "Sorry"
+
     end
     it 'does not allow the rooms and dates set aside for the block to be reserved by regular means' do
     end
     it 'enables rooms within a block to be booked individually by room number, and that reservation duration is in keeping with the block duration' do
     end
     it 'provides a discounted rate for rooms reserved from the block' do
+    end
+    it 'does not make the reservation in the room block if all rooms are full' do
+    end
+    it 'must provide same dates of an existing block to book one of those rooms' do
     end
     it 'can check the block for room availability' do
     end
