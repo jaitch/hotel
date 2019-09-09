@@ -60,24 +60,3 @@ describe 'overlap?' do
     expect(existing_date_range.overlap?(@bad_day_for_housekeeping)).must_equal false
   end
 end
-
-  # describe "available_rooms" do
-  #   it "outputs list of room numbers when prompted" do
-  #     expect(@new_reservation.available_rooms).must_be_kind_of Array
-  #     expect(@new_reservation.available_rooms.length).must_equal 20
-  #     expect(@new_reservation.available_rooms[0]).must_equal 1
-  #     expect(@new_reservation.available_rooms[19]).must_equal 20
-  #   end
-  # end
-
-  # describe 'reservations by date' do
-  #   let (:new_dates) {
-  #     Hotel::DateRange.new("2019-8-29", "2019-9-01")
-  #     Hotel::DateRange.new("2019-8-31", "2019-9-3")
-  #     it 'returns occupied rooms for given date' do
-  #       new_dates.reservation_by_date("2019-8-29")
-  #     end
-  #     it 'returns vacant rooms for given date' do
-  #     end
-  #   end
-  # end

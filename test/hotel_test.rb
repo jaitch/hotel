@@ -31,7 +31,6 @@ describe 'make_reservation' do
   it "makes a successful reservation and returns amount due" do
     expect(hotel.make_reservation('2001-02-03', '2001-02-06')).must_include "Reservation booked. Amount due: $600."
   end
-
   it 'will add date ranges to the occupied date ranges list as a reservation is made. it will also skip over rooms if they are occupied for the given date' do
     hotel.make_reservation('2019-2-2', '2019-2-5')
     hotel.make_reservation('2019-2-2', '2019-2-5')
@@ -41,7 +40,6 @@ describe 'make_reservation' do
     expect(hotel.all_rooms[2].occupied_date_ranges.length).must_equal 1
     expect(hotel.all_rooms[3].occupied_date_ranges.length).must_equal 0
   end
-
   it "returns apology msg instead of making the reservation if there are no available rooms" do
     hotel.make_reservation('2019-2-2', '2019-2-5')
     (hotel.make_reservation('2019-2-2', '2019-2-5'))
@@ -50,12 +48,11 @@ describe 'make_reservation' do
     (hotel.make_reservation('2019-2-2', '2019-2-5'))
     (hotel.make_reservation('2019-2-2', '2019-2-5'))
     (hotel.make_reservation('2019-2-2', '2019-2-5'))
-
     expect(hotel.make_reservation('2019-2-2', '2019-2-5')).must_include "Sorry. No available rooms for that date."
   end
 end
 
-describe 'make_room_block_reservation' do
+describe 'make_room_block' do
   let (:hotel) {
     @new_hotel = Hotel::Hotel.new(6)
   }
@@ -66,16 +63,26 @@ describe 'make_room_block_reservation' do
     hotel.make_room_block(3, '2019-10-1', '2019-10-15')
     expect(hotel.all_rooms[0].blocks.length).must_equal 1
   end
-  it "raises an exception if there aren't enough rooms available for the block requested" do
+  it "protests if there aren't enough rooms available for the block requested" do
     hotel.make_reservation('2019-2-2', '2019-2-5')
     hotel.make_reservation('2019-2-2', '2019-2-5')
     expect(hotel.make_room_block(5, '2019-2-1', '2019-2-10')).must_include "Sorry"
+  end
+  it "doesn't allow overlapping blocks to be made" do
+    hotel.make_room_block(5, '2019-2-1', '2019-2-10')
+    expect(hotel.make_room_block(5, '2019-2-3', '2019-2-18')).must_include "Sorry"
   end
   it 'does not allow the rooms and dates set aside for the block to be reserved by regular means' do
     hotel.make_room_block(5, '2019-2-1', '2019-2-10')
     hotel.make_reservation('2019-2-1', '2019-2-10')
     expect(hotel.make_reservation('2019-2-1', '2019-2-10')).must_include "Sorry"
   end
+end
+
+describe 'book_a_room_in_an_existing_block' do
+  let (:hotel) {
+    @new_hotel = Hotel::Hotel.new(6)
+  }
   it 'enables rooms within a block to be booked individually by room number, and that reservation duration is in keeping with the block duration. provides a discounted rate' do
     hotel.make_room_block(3, '2019-10-1', '2019-10-15')
     expect(hotel.book_a_room_in_an_existing_block(2, '2019-10-1', '2019-10-15')).must_include "Amount due: $2240."
@@ -85,11 +92,21 @@ describe 'make_room_block_reservation' do
     hotel.book_a_room_in_an_existing_block(1, '2019-2-1', '2019-2-10')
     expect(hotel.book_a_room_in_an_existing_block(1, '2019-2-1', '2019-2-10')).must_include "Sorry"
   end
-  it 'must provide same dates of an existing block to book one of those rooms' do
+  it 'must provide same dates of an existing block to book one of those rooms to reserve room' do
     hotel.make_room_block(5, '2019-2-1', '2019-2-10')
     expect(hotel.book_a_room_in_an_existing_block(1, '2019-2-1', '2019-2-11')).must_include "Sorry"
   end
+end
+
+describe 'rooms_available_in_an_existing_block' do
+  let (:hotel) {
+    @new_hotel = Hotel::Hotel.new(6)
+  }
   it 'can check the block for room availability' do
+    hotel.make_room_block(5, '2019-2-1', '2019-2-10')
+    hotel.book_a_room_in_an_existing_block(3, '2019-2-1', '2019-2-10')
+    expect(hotel.rooms_available_in_an_existing_block('2019-2-1', '2019-2-10')).must_be_instance_of Array
+    expect(hotel.rooms_available_in_an_existing_block('2019-2-1', '2019-2-10')).must_equal [1, 2, 4, 5]
   end
 end
 

@@ -1,0 +1,15 @@
+I feel like the code is extremely repetitive.
+I'd love to refactor this extensively with helper methods to deal with the endless iterating.
+Maybe I could make more classes--everything dealing with blocks ended up being much more complicated than I had anticipated, so they probably deserve their own class. A reservation class could take some of the onus off of Hotel.
+My variable names could be clearer. Method names are fine.
+I need to figure out when to use instance variables and when not to.
+I'd like to be more consistent in when/where I have the start and end dates and when/where I have ranges.
+I think I can streamline the overlap method with some logic.
+There is probably a better way to organize the data than in two arrays (dates occupied with regular reservations and dates blocked off) of DateRange instances.
+Perhaps I should keep reservations that are part of blocks separate from those that are individual reservations; right now they all end up in the same dates_occupied array. Maybe the Block class would solve that problem.
+I need to think of more edge cases for my test files.
+Because of the way the waves were designed, a lot of functionality should have been adapted rather than replicated with more advanced functionality. I should be able to combine some of my methods.
+This code feels like a messy, repetitive shopping list--it needs to be tighter.
+
+remember: don't compare different instances of DateRange to each other
+use 'self' in methods where appropriate
