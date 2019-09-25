@@ -41,6 +41,7 @@ My Hotel class takes on too many roles for sure.
 I would like to make a Reservation class to take on a lot of the behavior that is currently being taken on by Hotel. The resulting design would make for less coupling among the classes. I may make a Block class, too, because there ended up being a lot more behavior involved with blocks than I'd anticipated when I decided to put them in the Hotel class.
 
 I should rename the module, too, so that both it and the class aren't "Hotel."
+x left module named "Hotel"; renamed Hotel class "FrontDesk."
 
 I should add helper methods to DRY out code.
 
@@ -48,3 +49,4 @@ Some local variables are made instance variables unnecessarily.
 
 Raise exception if room not available instead of sending error message.
 
+Make more consistent where I parse the dates.

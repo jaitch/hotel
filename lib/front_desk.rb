@@ -3,7 +3,7 @@ require_relative 'room'
 require 'date'
 
 module Hotel
-  class Hotel
+  class FrontDesk
     attr_reader  :num_rooms, :start_date, :end_date, :all_rooms, :available_rooms, :reservations
 
     def initialize num_rooms

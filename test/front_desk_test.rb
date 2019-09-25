@@ -1,11 +1,11 @@
 require_relative 'test_helper'
 
-describe 'you can create a Hotel instance' do
+describe 'you can create a FrontDesk instance' do
   let (:new_hotel) {
-    Hotel::Hotel.new(20)
+    Hotel::FrontDesk.new(20)
   }
   it 'can be created' do
-    expect(Hotel::Hotel::new(20)).must_be_instance_of Hotel::Hotel
+    expect(Hotel::FrontDesk::new(20)).must_be_instance_of Hotel::FrontDesk
   end
   it 'makes an array of specified no. of rooms' do
     expect(new_hotel.all_rooms.length).must_equal 20
@@ -17,7 +17,7 @@ end
 
 describe 'list_rooms' do
   let (:new_hotel) {
-    Hotel::Hotel.new(20)
+    Hotel::FrontDesk.new(20)
   }
   it 'can list rooms by number' do
     expect(new_hotel.list_rooms(new_hotel.all_rooms)).must_be_kind_of Array
@@ -26,7 +26,7 @@ end
 
 describe 'make_reservation' do
   let (:hotel) {
-    @new_hotel = Hotel::Hotel.new(5)
+    @new_hotel = Hotel::FrontDesk.new(5)
   }
   it "makes a successful reservation and returns amount due" do
     expect(hotel.make_reservation('2001-02-03', '2001-02-06')).must_include "Reservation booked. Amount due: $600."
@@ -54,7 +54,7 @@ end
 
 describe 'make_room_block' do
   let (:hotel) {
-    @new_hotel = Hotel::Hotel.new(6)
+    @new_hotel = Hotel::FrontDesk.new(6)
   }
   it 'returns a rejection of asked for more than five rooms' do
     expect(hotel.make_room_block(6, '2019-10-1', '2019-10-15')).must_include "Sorry."
@@ -81,7 +81,7 @@ end
 
 describe 'book_a_room_in_an_existing_block' do
   let (:hotel) {
-    @new_hotel = Hotel::Hotel.new(6)
+    @new_hotel = Hotel::FrontDesk.new(6)
   }
   it 'enables rooms within a block to be booked individually by room number, and that reservation duration is in keeping with the block duration. provides a discounted rate' do
     hotel.make_room_block(3, '2019-10-1', '2019-10-15')
@@ -100,7 +100,7 @@ end
 
 describe 'rooms_available_in_an_existing_block' do
   let (:hotel) {
-    @new_hotel = Hotel::Hotel.new(6)
+    @new_hotel = Hotel::FrontDesk.new(6)
   }
   it 'can check the block for room availability' do
     hotel.make_room_block(5, '2019-2-1', '2019-2-10')
@@ -112,19 +112,19 @@ end
 
 describe 'exception thrower' do
   it "raises an ArgumentError if the end date is before the start date" do
-    expect {Hotel::Hotel.new'2001-02-04', '2001-02-03'}.must_raise ArgumentError
+    expect {Hotel::FrontDesk.new'2001-02-04', '2001-02-03'}.must_raise ArgumentError
   end
   it "raises an ArgumentError if given an invalid start date" do
-    expect {Hotel::Hotel.new'2001-02-33', '2001-03-01'}.must_raise ArgumentError
+    expect {Hotel::FrontDesk.new'2001-02-33', '2001-03-01'}.must_raise ArgumentError
   end
   it "raises an ArgumentError if given an invalid end date" do
-    expect {Hotel::Hotel.new'2001-03-14', '2001-02-29'}.must_raise ArgumentError
+    expect {Hotel::FrontDesk.new'2001-03-14', '2001-02-29'}.must_raise ArgumentError
   end
 end
 
 describe 'available_rooms_given_date' do
   let (:hotel) {
-    @new_hotel = Hotel::Hotel.new(5)
+    @new_hotel = Hotel::FrontDesk.new(5)
   }
   it 'lists available rooms (by room number) given a date' do
     hotel.make_reservation('2019-2-2', '2019-2-5')
@@ -162,7 +162,7 @@ end
 
 describe 'available_rooms_given_date_range' do
   let (:hotel) {
-    @new_hotel = Hotel::Hotel.new(5)
+    @new_hotel = Hotel::FrontDesk.new(5)
   }
   it 'returns a list of rooms available for an entire date range' do
     hotel.make_reservation('2019-3-10', '2019-3-30')
@@ -181,7 +181,7 @@ end
 
 describe 'list_reservations_given_date' do
   let (:hotel) {
-    @new_hotel = Hotel::Hotel.new(3)
+    @new_hotel = Hotel::FrontDesk.new(3)
   }
   it 'returns hash of date ranges and room #s for reservations occupying a given date' do
     hotel.make_reservation('2019-2-2', '2019-2-5')

@@ -11,5 +11,7 @@ module Hotel
       @occupied_date_ranges = []
       @blocks = []
     end
+
+    
   end
 end
