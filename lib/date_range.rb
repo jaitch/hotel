@@ -14,14 +14,7 @@ module Hotel
     end
 
     def overlap?(other_date_range)
-      if self.end_date > other_date_range.start_date && other_date_range.start_date > self.start_date || self.start_date < other_date_range.end_date && other_date_range.end_date < self.end_date
-        return true
-      elsif self.start_date > other_date_range.start_date && self.end_date < other_date_range.end_date || self.start_date < other_date_range.start_date && self.end_date > other_date_range.end_date
-        return true
-      elsif self.start_date == other_date_range.start_date || self.end_date == other_date_range.end_date
-        return true
-      end
-      return false
+      return self.end_date > other_date_range.start_date && other_date_range.start_date >= self.start_date || other_date_range.end_date > self.start_date && self.start_date >= other_date_range.start_date
     end
   end
 end
