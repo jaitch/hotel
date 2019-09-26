@@ -67,7 +67,7 @@ module Hotel
     end
 
     def available_rooms_given_date(date_sought)
-      @date_sought = Date.parse(date_sought)
+      date_sought = Date.parse(date_sought)
       @available_rooms = []
       @all_rooms.each do |room|
         if room.occupied_date_ranges.length == 0 && room.blocks.length == 0
@@ -75,13 +75,13 @@ module Hotel
         else
           room.occupied_date_ranges.each do |range|
             @cur_range = Range.new(range.start_date, range.end_date-1)
-            if (@cur_range.include? (@date_sought)) == false
+            if (@cur_range.include? (date_sought)) == false
               @available_rooms << room
             end
           end
           room.blocks.each do |range|
             @cur_range = Range.new(range.start_date, range.end_date-1)
-            if (@cur_range.include? (@date_sought)) == true && @available != nil && @available[-1] == room
+            if (@cur_range.include? (date_sought)) == true && @available != nil && @available[-1] == room
               @available.tap(&:pop)
             end
           end
@@ -103,7 +103,9 @@ module Hotel
             end
           end
           room.blocks.each do |range|
-            @cur_range = Range.new(range.start_date, range.end_date-1)
+            start_date = range.start_date.to_s
+            end_date = (range.end_date-1).to_s
+            @cur_range = DateRange.new(start_date, end_date)
             if (range.overlap?(date_range_object)) == true && @available_rooms != nil && @available_rooms[-1] == room
               @available_rooms.tap(&:pop)
             end
@@ -115,17 +117,17 @@ module Hotel
     end
 
     def list_reservations_given_date(date_sought)
-      @date_sought = Date.parse(date_sought)
-      @reservations = {}
+      date_sought = Date.parse(date_sought)
+      reservations = {}
       @all_rooms.each do |room|
         room.occupied_date_ranges.each do |range|
           @cur_range = Range.new(range.start_date, range.end_date)
-          if (@cur_range.include? (@date_sought)) == true
-            @reservations[range] = room.number
+          if (@cur_range.include? (date_sought)) == true
+            reservations[range] = room.number
           end
         end
       end
-      return @reservations
+      return reservations
     end
   end
 end
