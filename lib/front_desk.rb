@@ -69,16 +69,30 @@ module Hotel
     end
 
     def available_rooms_given_date(date_sought)
+      vacant_or_occupied_given_date(date_sought)
+      return list_rooms(@available_rooms)
+    end
+
+    def list_reservations_given_date(date_sought)
+      vacant_or_occupied_given_date(date_sought)
+      return @reservations
+    end
+
+# helper method for two methods wanting info on a specific date
+    def vacant_or_occupied_given_date(date_sought)
       date_sought = Date.parse(date_sought)
       @available_rooms = []
+      @reservations = {}
       @all_rooms.each do |room|
         if room.occupied_date_ranges.length == 0 && room.blocks.length == 0
           @available_rooms << room
         else
           room.occupied_date_ranges.each do |range|
             @cur_range = Range.new(range.start_date, range.end_date-1)
-            if (@cur_range.include? (date_sought)) == false
+            if (@cur_range.include?(date_sought)) == false
               @available_rooms << room
+            elsif (@cur_range.include?(date_sought)) == true
+              @reservations[range] = room.number
             end
           end
           room.blocks.each do |range|
@@ -90,7 +104,7 @@ module Hotel
         end
       end
       @available_rooms.uniq!
-      return list_rooms(@available_rooms)
+      # return list_rooms(@available_rooms)
     end
 
     def available_rooms_given_date_range(date_range_object)
@@ -114,20 +128,6 @@ module Hotel
       end
       @available_rooms.uniq!
       return list_rooms(@available_rooms)
-    end
-
-    def list_reservations_given_date(date_sought)
-      date_sought = Date.parse(date_sought)
-      reservations = {}
-      @all_rooms.each do |room|
-        room.occupied_date_ranges.each do |range|
-          @cur_range = Range.new(range.start_date, range.end_date)
-          if (@cur_range.include? (date_sought)) == true
-            reservations[range] = room.number
-          end
-        end
-      end
-      return reservations
     end
   end
 end
