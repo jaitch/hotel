@@ -28,7 +28,6 @@ module Hotel
       if num_rooms > 5
         return 'Sorry. Blocks have a maximum of five rooms.'
       end
-
       if available_rooms_given_date_range(date_range_object).length >= num_rooms
         (@available_rooms)[0...num_rooms].map {|room|room.blocks << date_range_object}
         return "We have set aside rooms #{list_rooms((@available_rooms)[0...num_rooms])} for you. They are available to reserve at a 20% discount."
@@ -103,9 +102,7 @@ module Hotel
             end
           end
           room.blocks.each do |range|
-            start_date = range.start_date.to_s
-            end_date = (range.end_date-1).to_s
-            @cur_range = DateRange.new(start_date, end_date)
+            @cur_range = Range.new(range.start_date, range.end_date-1)
             if (range.overlap?(date_range_object)) == true && @available_rooms != nil && @available_rooms[-1] == room
               @available_rooms.tap(&:pop)
             end
