@@ -20,8 +20,6 @@ module Hotel
       @end_date = Date.parse(end_date)
       @pending_date_range = DateRange.new(start_date.to_s, end_date.to_s)
 
-      validate_dates(@pending_date_range)
-
       if available_rooms_given_date_range(start_date, end_date).length > 0
         available_rooms[0].occupied_date_ranges << @pending_date_range
         return "Reservation booked. Amount due: $#{calculate_cost(@pending_date_range, rate = 200)}."
@@ -39,8 +37,6 @@ module Hotel
       if @num_rooms > 5
         return 'Sorry. Blocks have a maximum of five rooms.'
       end
-
-      validate_dates(@pending_date_range)
 
       if available_rooms_given_date_range(start_date, end_date).length >= num_rooms
         (@available_rooms)[0...num_rooms].map {|room|room.blocks << @pending_date_range}
@@ -65,7 +61,6 @@ module Hotel
     def book_a_room_in_an_existing_block(room_num, start_date, end_date)
       @room_index = room_num-1
       @date_range = DateRange.new(start_date, end_date)
-      validate_dates(@date_range)
       all_rooms[@room_index].blocks.each do |block|
         if block.start_date == @date_range.start_date && block.end_date == @date_range.end_date
           all_rooms[@room_index].occupied_date_ranges << @date_range
@@ -76,16 +71,7 @@ module Hotel
       return "Sorry. That room is not available at the block rate for those dates."
     end
 
-    # helper method for validation
-    def validate_dates(pending_date_range)
-      if Date.valid_date?(start_date.year,start_date.mon,start_date.mday) == false || Date.valid_date?(end_date.year,end_date.mon,end_date.mday) == false
-        raise ArgumentError, "You must give valid dates."
-      end
 
-      if start_date > end_date
-        raise ArgumentError, "End date cannot be before start date."
-      end
-    end
 
     # helper method for calculating cost
     def calculate_cost(pending_date_range, rate)

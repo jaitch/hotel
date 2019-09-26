@@ -7,6 +7,16 @@ module Hotel
     def initialize start_date, end_date
       @start_date = Date.parse(start_date)
       @end_date = Date.parse(end_date)
+      validate_dates(@start_date, @end_date)
+    end
+
+    def validate_dates(start_date, end_date)
+      if Date.valid_date?(start_date.year,start_date.mon,start_date.mday) == false || Date.valid_date?(end_date.year,end_date.mon,end_date.mday) == false
+        raise ArgumentError, "You must give valid dates."
+      end
+      if start_date > end_date
+        raise ArgumentError, "End date cannot be before start date."
+      end
     end
 
     def duration
