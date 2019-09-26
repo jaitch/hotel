@@ -16,7 +16,6 @@ module Hotel
     end
 
     def make_reservation(date_range_object)
-
       if available_rooms_given_date_range(date_range_object).length > 0
         available_rooms[0].occupied_date_ranges << date_range_object
         return "Reservation booked. Amount due: $#{calculate_cost(date_range_object, rate = 200)}."
@@ -25,44 +24,38 @@ module Hotel
       end
     end
 
-    def make_room_block(num_rooms, start_date, end_date)
-      @num_rooms = num_rooms
-      @start_date = Date.parse(start_date)
-      @end_date = Date.parse(end_date)
-      @pending_date_range = DateRange.new(start_date.to_s, end_date.to_s)
-
-      if @num_rooms > 5
+    def make_room_block(num_rooms, date_range_object)
+      if num_rooms > 5
         return 'Sorry. Blocks have a maximum of five rooms.'
       end
 
-      if available_rooms_given_date_range(start_date, end_date).length >= num_rooms
-        (@available_rooms)[0...num_rooms].map {|room|room.blocks << @pending_date_range}
+      if available_rooms_given_date_range(date_range_object).length >= num_rooms
+        (@available_rooms)[0...num_rooms].map {|room|room.blocks << date_range_object}
         return "We have set aside rooms #{list_rooms((@available_rooms)[0...num_rooms])} for you. They are available to reserve at a 20% discount."
-      elsif available_rooms_given_date_range(@start_date, @end_date).length < num_rooms
+      elsif available_rooms_given_date_range(date_range_object).length < num_rooms
         return "Sorry. We don't have that many rooms available for that date."
       end
     end
 
-    def rooms_available_in_an_existing_block(start_date, end_date)
-      @rooms_left = []
+    def rooms_available_in_an_existing_block(date_range_object)
+      rooms_left = []
       @all_rooms.each do |room|
         room.blocks.each do |block|
-          if block.start_date == self.start_date && block.end_date == self.end_date
-            @rooms_left << room
+          if block.start_date == date_range_object.start_date && block.end_date == date_range_object.end_date
+            rooms_left << room
           end
         end
       end
-      return list_rooms(@rooms_left)
+      return list_rooms(rooms_left)
     end
 
-    def book_a_room_in_an_existing_block(room_num, start_date, end_date)
-      @room_index = room_num-1
-      @date_range = DateRange.new(start_date, end_date)
-      all_rooms[@room_index].blocks.each do |block|
-        if block.start_date == @date_range.start_date && block.end_date == @date_range.end_date
-          all_rooms[@room_index].occupied_date_ranges << @date_range
-          all_rooms[@room_index].blocks.delete(block)
-          return "Reservation booked. Amount due: $#{calculate_cost(@date_range, rate = 160)}."
+    def book_a_room_in_an_existing_block(room_num, date_range_object)
+      room_index = room_num-1
+      all_rooms[room_index].blocks.each do |block|
+        if block.start_date == date_range_object.start_date && block.end_date == date_range_object.end_date
+          all_rooms[room_index].occupied_date_ranges << date_range_object
+          all_rooms[room_index].blocks.delete(block)
+          return "Reservation booked. Amount due: $#{calculate_cost(date_range_object, rate = 160)}."
         end
       end
       return "Sorry. That room is not available at the block rate for those dates."
