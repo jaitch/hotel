@@ -16,11 +16,11 @@ describe 'you can create a FrontDesk instance' do
 end
 
 describe 'list_rooms' do
-  let (:new_hotel) {
+  let (:hotel) {
     Hotel::FrontDesk.new(20)
   }
   it 'can list rooms by number' do
-    expect(new_hotel.list_rooms(new_hotel.all_rooms)).must_be_kind_of Array
+    expect(hotel.list_rooms(hotel.all_rooms)).must_be_kind_of Array
   end
 end
 

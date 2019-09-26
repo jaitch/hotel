@@ -55,7 +55,9 @@ module Hotel
       room_index = room_num-1
       all_rooms[room_index].blocks.each do |block|
         if block.start_date == date_range_object.start_date && block.end_date == date_range_object.end_date
+          reservation = Hotel::Reservation.new(date_range_object)
           all_rooms[room_index].occupied_date_ranges << date_range_object
+          # all_rooms[room_index].reservations << reservation
           all_rooms[room_index].blocks.delete(block)
           return "Reservation booked. Amount due: $#{calculate_cost(date_range_object, rate = 160)}."
         end
