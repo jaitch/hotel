@@ -15,16 +15,13 @@ module Hotel
       return rooms_array.map { |room| room.number }
     end
 
-    def make_reservation(start_date, end_date)
-      @start_date = Date.parse(start_date)
-      @end_date = Date.parse(end_date)
-      @pending_date_range = DateRange.new(start_date.to_s, end_date.to_s)
+    def make_reservation(date_range_object)
 
-      if available_rooms_given_date_range(start_date, end_date).length > 0
-        available_rooms[0].occupied_date_ranges << @pending_date_range
-        return "Reservation booked. Amount due: $#{calculate_cost(@pending_date_range, rate = 200)}."
-      elsif available_rooms_given_date_range(start_date, end_date).length == 0
-        return "Sorry. No available rooms for that date."
+      if available_rooms_given_date_range(date_range_object).length > 0
+        available_rooms[0].occupied_date_ranges << date_range_object
+        return "Reservation booked. Amount due: $#{calculate_cost(date_range_object, rate = 200)}."
+      elsif available_rooms_given_date_range(date_range_object).length == 0
+        raise ArgumentError
       end
     end
 
@@ -71,9 +68,6 @@ module Hotel
       return "Sorry. That room is not available at the block rate for those dates."
     end
 
-
-
-    # helper method for calculating cost
     def calculate_cost(pending_date_range, rate)
       amount_due = rate * pending_date_range.duration
       return amount_due
@@ -104,21 +98,20 @@ module Hotel
       return list_rooms(@available_rooms)
     end
 
-    def available_rooms_given_date_range(start_date, end_date)
-      @date_range_sought = DateRange.new(start_date.to_s, end_date.to_s)
+    def available_rooms_given_date_range(date_range_object)
       @available_rooms = []
       @all_rooms.each do |room|
         if room.occupied_date_ranges.length == 0 && room.blocks.length == 0
           @available_rooms << room
         else
           room.occupied_date_ranges.each do |range|
-            if (range.overlap?(@date_range_sought)) == false
+            if (range.overlap?(date_range_object)) == false
               @available_rooms << room
             end
           end
           room.blocks.each do |range|
             @cur_range = Range.new(range.start_date, range.end_date-1)
-            if (range.overlap? (@date_range_sought)) == true && @available_rooms != nil && @available_rooms[-1] == room
+            if (range.overlap?(date_range_object)) == true && @available_rooms != nil && @available_rooms[-1] == room
               @available_rooms.tap(&:pop)
             end
           end

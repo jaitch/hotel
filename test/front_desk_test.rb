@@ -26,29 +26,32 @@ end
 
 describe 'make_reservation' do
   let (:hotel) {
-    @new_hotel = Hotel::FrontDesk.new(5)
+    Hotel::FrontDesk.new(5)
   }
   it "makes a successful reservation and returns amount due" do
-    expect(hotel.make_reservation('2001-02-03', '2001-02-06')).must_include "Reservation booked. Amount due: $600."
+    possible_date_range = Hotel::DateRange.new('2019-2-2', '2019-2-5')
+    expect(hotel.make_reservation(possible_date_range)).must_include "Reservation booked. Amount due: $600."
   end
   it 'will add date ranges to the occupied date ranges list as a reservation is made. it will also skip over rooms if they are occupied for the given date' do
-    hotel.make_reservation('2019-2-2', '2019-2-5')
-    hotel.make_reservation('2019-2-2', '2019-2-5')
-    hotel.make_reservation('2019-2-2', '2019-2-5')
+    possible_date_range = Hotel::DateRange.new('2019-2-2', '2019-2-5')
+    hotel.make_reservation(possible_date_range)
+    hotel.make_reservation(possible_date_range)
+    hotel.make_reservation(possible_date_range)
     expect(hotel.all_rooms[0].occupied_date_ranges.length).must_equal 1
     expect(hotel.all_rooms[1].occupied_date_ranges.length).must_equal 1
     expect(hotel.all_rooms[2].occupied_date_ranges.length).must_equal 1
     expect(hotel.all_rooms[3].occupied_date_ranges.length).must_equal 0
   end
   it "returns apology msg instead of making the reservation if there are no available rooms" do
-    hotel.make_reservation('2019-2-2', '2019-2-5')
-    (hotel.make_reservation('2019-2-2', '2019-2-5'))
-    (hotel.make_reservation('2019-2-2', '2019-2-5'))
-    (hotel.make_reservation('2019-2-2', '2019-2-5'))
-    (hotel.make_reservation('2019-2-2', '2019-2-5'))
-    (hotel.make_reservation('2019-2-2', '2019-2-5'))
-    (hotel.make_reservation('2019-2-2', '2019-2-5'))
-    expect(hotel.make_reservation('2019-2-2', '2019-2-5')).must_include "Sorry. No available rooms for that date."
+    possible_date_range = Hotel::DateRange.new('2019-2-2', '2019-2-5')
+    hotel.make_reservation(possible_date_range)
+    hotel.make_reservation(possible_date_range)
+    hotel.make_reservation(possible_date_range)
+    hotel.make_reservation(possible_date_range)
+    hotel.make_reservation(possible_date_range)
+    hotel.make_reservation(possible_date_range)
+    hotel.make_reservation(possible_date_range)
+    expect(hotel.make_reservation(possible_date_range)).must_raise ArgumentError
   end
 end
 
