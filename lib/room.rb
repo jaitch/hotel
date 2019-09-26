@@ -12,6 +12,6 @@ module Hotel
       @blocks = []
     end
 
-    
+
   end
 end
