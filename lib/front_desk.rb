@@ -17,6 +17,7 @@ module Hotel
 
     def make_reservation(date_range_object)
       if available_rooms_given_date_range(date_range_object).length > 0
+        Reservation.new(date_range_object)
         available_rooms[0].occupied_date_ranges << date_range_object
         return "Reservation booked. Amount due: $#{calculate_cost(date_range_object, rate = 200)}."
       elsif available_rooms_given_date_range(date_range_object).length == 0
