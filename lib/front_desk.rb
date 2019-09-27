@@ -95,6 +95,7 @@ module Hotel
               @reservations[range] = room.number
             end
           end
+          # take room off available list if set aside for block
           room.blocks.each do |range|
             @cur_range = Range.new(range.start_date, range.end_date-1)
             if (@cur_range.include? (date_sought)) == true && @available != nil && @available[-1] == room
@@ -104,7 +105,6 @@ module Hotel
         end
       end
       @available_rooms.uniq!
-      # return list_rooms(@available_rooms)
     end
 
     def available_rooms_given_date_range(date_range_object)
