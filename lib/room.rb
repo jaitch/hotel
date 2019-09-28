@@ -18,11 +18,11 @@ module Hotel
       else
         self.occupied_date_ranges.each do |range|
           if ((range.start_date...range.end_date).include?(date_sought)) == false
+            return true
           end
-          return true
         end
+        return false
       end
-      return false
     end
   end
 end

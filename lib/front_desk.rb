@@ -74,10 +74,11 @@ module Hotel
       }
     end
 
-    # def list_reservations_given_date(date_sought)
-    #   vacant_or_occupied_given_date(date_sought)
-    #   return @reservations
-    # end
+    def list_reservations_given_date(date_sought)
+      @all_rooms.select { |room| room.is_available?(date_sought) == false}.map { |room| room.number
+      }
+
+    end
 
     # helper method for two methods wanting info on a specific date
     # def vacant_or_occupied_given_date(date_sought)

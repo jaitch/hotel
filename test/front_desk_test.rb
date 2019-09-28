@@ -215,7 +215,7 @@ describe 'list_reservations_given_date' do
   let (:hotel) {
     Hotel::FrontDesk.new(3)
   }
-  it 'returns hash of date ranges and room #s for reservations occupying a given date' do
+  it 'returns array of room #s with reservations occupying a given date' do
   first_date_range = Hotel::DateRange.new('2019-2-2', '2019-2-5')
   second_date_range = Hotel::DateRange.new('2019-2-1', '2019-2-6')
   third_date_range = Hotel::DateRange.new('2019-2-3', '2019-2-7')
@@ -226,8 +226,8 @@ describe 'list_reservations_given_date' do
     hotel.make_reservation(third_date_range)
     hotel.make_reservation(fourth_date_range)
     hotel.make_reservation(fifth_date_range)
-    expect(hotel.list_reservations_given_date('2019-2-4')).must_be_kind_of Hash
+    expect(hotel.list_reservations_given_date('2019-2-4')).must_be_kind_of Array
     expect(hotel.list_reservations_given_date('2019-3-5').length).must_equal 2
-    expect(hotel.list_reservations_given_date('2019-2-4').values).must_equal [1, 2, 3]
+    expect(hotel.list_reservations_given_date('2019-2-4')).must_equal [1, 2, 3]
   end
 end
