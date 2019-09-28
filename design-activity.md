@@ -50,4 +50,6 @@ Raise exception if room not available instead of sending error message.
 
 Make more consistent where I parse the dates.
 
-I should be storing an array of reservations for each room, not occupied dates
+I should be storing an array of reservations for each room, not occupied dates.
+
+Right now front desk class is changing variables of room class--available rooms, occupied rooms. move into room class.
