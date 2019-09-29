@@ -43,9 +43,8 @@ module Hotel
     end
 
     def rooms_available_in_an_existing_block(date_range_object)
-      rooms_left = []
-      @all_rooms.select { |room| room.rooms_in_given_block(date_range_object)}
-      return list_rooms(rooms_left)
+      return @all_rooms.select { |room| room.in_given_block?(date_range_object)}.map {|room| room.number}
+
     end
 
     def book_a_room_in_an_existing_block(room_num, date_range_object)

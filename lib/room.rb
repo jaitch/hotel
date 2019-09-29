@@ -13,10 +13,10 @@ module Hotel
     end
 
     def is_available_on_date? date_sought
-      if self.occupied_date_ranges.length == 0
+      if @occupied_date_ranges.length == 0
         return true
       else
-        self.occupied_date_ranges.each do |range|
+        @occupied_date_ranges.each do |range|
           if ((range.start_date...range.end_date).include?(date_sought)) == false
             return true
           end
@@ -26,10 +26,10 @@ module Hotel
     end
 
     def is_within_a_block? date_sought
-      if self.blocks.length == 0
+      if @blocks.length == 0
         return false
       else
-        self.blocks.each do |block|
+        @blocks.each do |block|
           if ((block.start_date...block.end_date).include?(date_sought)) == true
             return true
           end
@@ -39,14 +39,14 @@ module Hotel
     end
 
     def is_available_for_date_range? date_range_object
-      if self.occupied_date_ranges.length == 0 && self.blocks.length == 0
+      if @occupied_date_ranges.length == 0 && @blocks.length == 0
         return true
       else
-        self.occupied_date_ranges.each do |range|
+        @occupied_date_ranges.each do |range|
           if (range.overlap?(date_range_object))
             return false
           end
-          self.blocks.each do |block|
+          @blocks.each do |block|
             if (block.overlap?(date_range_object))
               return false
             end
@@ -56,18 +56,25 @@ module Hotel
       end
     end
 
-    def rooms_in_given_block date_range_object
-      self.blocks.each do |block|
-        block.start_date == date_range_object.start_date && block.end_date == date_range_object.end_date
+    def in_given_block? date_range_object
+      @blocks.each do |block|
+        if block.start_date == date_range_object.start_date && block.end_date == date_range_object.end_date
+          return true
+        end
       end
+      return false
     end
 
     def add_to_blocks date_range_object
-      self.blocks << date_range_object
+      @blocks << date_range_object
     end
 
     def add_to_occupied_date_ranges date_range_object
-      self.occupied_date_ranges << date_range_object
+      puts self.number
+      puts occupied_date_ranges
+      @occupied_date_ranges << date_range_object
+      puts self.number
+      puts occupied_date_ranges
     end
   end
 end

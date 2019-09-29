@@ -144,7 +144,6 @@ describe 'available_rooms_given_date' do
     hotel.make_reservation(date_range)
     hotel.make_reservation(date_range)
     hotel.make_reservation(date_range)
-    expect(hotel.available_rooms_given_date('2019-2-6')).must_be_instance_of Array
     expect(hotel.available_rooms_given_date('2019-2-6').length).must_equal 5
     expect(hotel.available_rooms_given_date('2019-2-4').length).must_equal 2
   end
