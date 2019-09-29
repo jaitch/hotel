@@ -61,5 +61,13 @@ module Hotel
         block.start_date == date_range_object.start_date && block.end_date == date_range_object.end_date
       end
     end
+
+    def add_to_blocks date_range_object
+      self.blocks << date_range_object
+    end
+
+    def add_to_occupied_date_ranges date_range_object
+      self.occupied_date_ranges << date_range_object
+    end
   end
 end
