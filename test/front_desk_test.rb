@@ -42,7 +42,7 @@ describe 'make_reservation' do
     expect(hotel.all_rooms[2].occupied_date_ranges.length).must_equal 1
     expect(hotel.all_rooms[3].occupied_date_ranges.length).must_equal 0
   end
-  it "returns raises an error instead of making the reservation if there are no available rooms" do
+  it "raises an error instead of making the reservation if there are no available rooms" do
     possible_date_range = Hotel::DateRange.new('2019-2-2', '2019-2-5')
     hotel.make_reservation(possible_date_range)
     hotel.make_reservation(possible_date_range)
@@ -59,9 +59,9 @@ describe 'make_room_block' do
   let (:hotel) {
     Hotel::FrontDesk.new(6)
   }
-  it 'raises an error if asked for more than five rooms' do
+  it 'apologizes if asked for more than five rooms' do
     date_range = Hotel::DateRange.new('2019-10-1', '2019-10-15')
-    expect(hotel.make_room_block(6, date_range)).must_raise ArgumentError
+    expect(hotel.make_room_block(6, date_range)).must_include "Sorry"
   end
   it 'adds the block dates to the block array within Room' do
     date_range = Hotel::DateRange.new('2019-10-1', '2019-10-15')
@@ -102,13 +102,13 @@ describe 'book_a_room_in_an_existing_block' do
     date_range = Hotel::DateRange.new('2019-2-1', '2019-2-10')
     hotel.make_room_block(5, date_range)
     hotel.book_a_room_in_an_existing_block(1, date_range)
-    expect(hotel.book_a_room_in_an_existing_block(1, date_range)).must_raise ArgumentError
+    expect(hotel.book_a_room_in_an_existing_block(1, date_range)).must_include "Sorry."
   end
   it 'must provide same dates of an existing block to book one of those rooms to reserve room' do
     date_range = Hotel::DateRange.new('2019-2-1', '2019-2-10')
     failing_date_range = Hotel::DateRange.new('2019-2-1', '2019-2-11')
     hotel.make_room_block(5, date_range)
-    expect(hotel.book_a_room_in_an_existing_block(1, failing_date_range)).must_raise ArgumentError
+    expect(hotel.book_a_room_in_an_existing_block(1, failing_date_range)).must_include "Sorry."
   end
 end
 
