@@ -22,7 +22,6 @@ module Hotel
           reservation = Hotel::Reservation.new(date_range_object)
           room.add_to_occupied_date_ranges(date_range_object)
           return "Reservation booked. Amount due: $#{reservation.calculate_cost(date_range_object, 200)}."
-          break
         end
       end
       raise ArgumentError, 'Not available. Sorry.'
@@ -63,8 +62,7 @@ module Hotel
     end
 
     def calculate_cost(date_range_object, rate)
-      amount_due = rate * date_range_object.duration
-      return amount_due
+      return rate * date_range_object.duration
     end
 
     def available_rooms_given_date(date_sought)

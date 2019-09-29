@@ -49,9 +49,7 @@ describe 'make_reservation' do
     hotel.make_reservation(possible_date_range)
     hotel.make_reservation(possible_date_range)
     hotel.make_reservation(possible_date_range)
-    hotel.make_reservation(possible_date_range)
-    hotel.make_reservation(possible_date_range)
-    expect(hotel.make_reservation(possible_date_range)).must_raise ArgumentError
+    expect {hotel.make_reservation(possible_date_range)}.must_raise ArgumentError
   end
 end
 
@@ -73,19 +71,19 @@ describe 'make_room_block' do
     failing_date_range = Hotel::DateRange.new('2019-2-1', '2019-2-10')
     hotel.make_reservation(date_range)
     hotel.make_reservation(date_range)
-    expect(hotel.make_room_block(5, failing_date_range)).must_raise ArgumentError
+    expect {hotel.make_room_block(5, failing_date_range)}.must_raise ArgumentError
   end
   it "doesn't allow overlapping blocks to be made" do
     date_range = Hotel::DateRange.new('2019-2-1', '2019-2-10')
     failing_date_range = Hotel::DateRange.new('2019-2-3', '2019-2-18')
     hotel.make_room_block(5, date_range)
-    expect(hotel.make_room_block(5, failing_date_range)).must_raise ArgumentError
+    expect {hotel.make_room_block(5, failing_date_range)}.must_raise ArgumentError
   end
   it 'does not allow the rooms and dates set aside for the block to be reserved by regular means' do
     date_range = Hotel::DateRange.new('2019-2-1', '2019-2-10')
     hotel.make_room_block(5, date_range)
     hotel.make_reservation(date_range)
-    expect(hotel.make_reservation(date_range)).must_raise ArgumentError
+    expect {hotel.make_reservation(date_range)}.must_raise ArgumentError
   end
 end
 
@@ -146,7 +144,6 @@ describe 'available_rooms_given_date' do
     hotel.make_reservation(date_range)
     hotel.make_reservation(date_range)
     hotel.make_reservation(date_range)
-    hotel.available_rooms_given_date('2019-2-6')
     expect(hotel.available_rooms_given_date('2019-2-6')).must_be_instance_of Array
     expect(hotel.available_rooms_given_date('2019-2-6').length).must_equal 5
     expect(hotel.available_rooms_given_date('2019-2-4').length).must_equal 2
