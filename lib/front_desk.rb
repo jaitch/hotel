@@ -45,12 +45,7 @@ module Hotel
     
     def rooms_available_in_an_existing_block(date_range_object)
       rooms_left = []
-      @all_rooms.select { |room| rooms_in_given_block(date_range_object)}
-      room.blocks.each do |block|
-        if block.start_date == date_range_object.start_date && block.end_date == date_range_object.end_date
-          rooms_left << room
-        end
-      end
+      @all_rooms.select { |room| room.rooms_in_given_block(date_range_object)}
       return list_rooms(rooms_left)
     end
     

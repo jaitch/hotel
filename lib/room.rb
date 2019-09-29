@@ -57,7 +57,9 @@ module Hotel
     end
 
     def rooms_in_given_block date_range_object
-      block.start_date == date_range_object.start_date && block.end_date == date_range_object.end_date
+      self.blocks.each do |block|
+        block.start_date == date_range_object.start_date && block.end_date == date_range_object.end_date
+      end
     end
   end
 end
