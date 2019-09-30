@@ -13,7 +13,7 @@ module Hotel
     end
 
     def is_available_on_date? date_sought
-      Date.parse(date_sought.to_s)
+      date_sought = Date.parse(date_sought.to_s)
       if @occupied_date_ranges.length == 0
         return true
       else
@@ -27,6 +27,7 @@ module Hotel
     end
 
     def is_within_a_block? date_sought
+      date_sought = Date.parse(date_sought.to_s)
       if @blocks.length == 0
         return false
       else
