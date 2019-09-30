@@ -24,7 +24,7 @@ describe 'is_within_a_block?' do
     room = Hotel::Room.new(1)
     date_range = Hotel::DateRange.new('2019-02-01', '2019-02-07')
     room.blocks << date_range
-    expect(room.is_within_a_block?('2019-02-03')).must_equal true
+    expect(room.is_within_a_block?(Date.parse('2019-02-03'))).must_equal true
   end
   it 'returns false if it is not within a block' do
     room = Hotel::Room.new(1)

@@ -26,7 +26,6 @@ module Hotel
     end
 
     def is_within_a_block? date_sought
-      date_sought = Date.parse(date_sought.to_s)
       if @blocks.length == 0
         return false
       else

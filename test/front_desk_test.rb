@@ -222,7 +222,7 @@ describe 'list_reservations_given_date' do
     hotel.make_reservation(third_date_range)
     hotel.make_reservation(fourth_date_range)
     hotel.make_reservation(fifth_date_range)
-    expect(hotel.list_reservations_given_date('2019-3-5').length).must_equal 2
-    expect(hotel.list_reservations_given_date('2019-2-4')).must_equal [1, 2, 3]
+    expect(hotel.list_reservations_given_date(Date.parse('2019-3-5')).length).must_equal 2
+    expect(hotel.list_reservations_given_date(Date.parse('2019-2-4'))).must_equal [1, 2, 3]
   end
 end
