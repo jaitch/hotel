@@ -48,10 +48,10 @@ module Hotel
           if (range.overlap?(date_range_object))
             return false
           end
-          @blocks.each do |block|
-            if (block.overlap?(date_range_object))
-              return false
-            end
+        end
+        @blocks.each do |block|
+          if (block.overlap?(date_range_object))
+            return false
           end
         end
         return true
