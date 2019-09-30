@@ -70,7 +70,7 @@ module Hotel
     end
 
     def list_reservations_given_date(date_sought)
-      p @all_rooms.select { |room| room.is_available_on_date?(date_sought) == false
+      return @all_rooms.select { |room| room.is_available_on_date?(date_sought) == false
       }.map { |room| room.number}
     end
 

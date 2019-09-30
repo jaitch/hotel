@@ -212,11 +212,11 @@ describe 'list_reservations_given_date' do
     Hotel::FrontDesk.new(3)
   }
   it 'returns array of room #s with reservations occupying a given date' do
-  first_date_range = Hotel::DateRange.new('2019-2-2', '2019-2-5')
-  second_date_range = Hotel::DateRange.new('2019-2-1', '2019-2-6')
-  third_date_range = Hotel::DateRange.new('2019-2-3', '2019-2-7')
-  fourth_date_range = Hotel::DateRange.new('2019-3-1', '2019-3-7')
-  fifth_date_range = Hotel::DateRange.new('2019-3-5', '2019-3-6')
+    first_date_range = Hotel::DateRange.new('2019-2-2', '2019-2-5')
+    second_date_range = Hotel::DateRange.new('2019-2-1', '2019-2-6')
+    third_date_range = Hotel::DateRange.new('2019-2-3', '2019-2-7')
+    fourth_date_range = Hotel::DateRange.new('2019-3-1', '2019-3-7')
+    fifth_date_range = Hotel::DateRange.new('2019-3-5', '2019-3-6')
     hotel.make_reservation(first_date_range)
     hotel.make_reservation(second_date_range)
     hotel.make_reservation(third_date_range)
