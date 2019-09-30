@@ -35,7 +35,6 @@ module Hotel
       if num_rooms <= available_rooms_array.length
         available_rooms_array[0...num_rooms].each do |room|
           room.add_to_blocks(date_range_object)
-          p "#{room.number}: #{room.blocks}"
         end
         return "We have set aside rooms #{list_rooms((available_rooms_array)[0...num_rooms])} for you. They are available to reserve at a 20% discount."
       elsif available_rooms_array.length < num_rooms
@@ -66,7 +65,7 @@ module Hotel
     end
 
     def available_rooms_given_date(date_sought)
-      p @all_rooms.select { |room| room.is_available_on_date?(date_sought) && (room.is_within_a_block?(date_sought) == false)
+      @all_rooms.select { |room| room.is_available_on_date?(date_sought) && (room.is_within_a_block?(date_sought) == false)
       }
     end
 

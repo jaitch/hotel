@@ -13,6 +13,7 @@ module Hotel
     end
 
     def is_available_on_date? date_sought
+      Date.parse(date_sought.to_s)
       if @occupied_date_ranges.length == 0
         return true
       else
@@ -70,11 +71,7 @@ module Hotel
     end
 
     def add_to_occupied_date_ranges date_range_object
-      puts self.number
-      puts occupied_date_ranges
       @occupied_date_ranges << date_range_object
-      puts self.number
-      puts occupied_date_ranges
     end
   end
 end
