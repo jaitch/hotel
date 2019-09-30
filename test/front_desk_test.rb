@@ -144,8 +144,8 @@ describe 'available_rooms_given_date' do
     hotel.make_reservation(date_range)
     hotel.make_reservation(date_range)
     hotel.make_reservation(date_range)
-    expect(hotel.available_rooms_given_date('2019-2-6').length).must_equal 5
-    expect(hotel.available_rooms_given_date('2019-2-4').length).must_equal 2
+    expect(hotel.available_rooms_given_date(Date.parse('2019-2-6')).length).must_equal 5
+    expect(hotel.available_rooms_given_date(Date.parse('2019-2-4')).length).must_equal 2
   end
   it "doesn't include a room number more than once for a date" do
     date_range = Hotel::DateRange.new('2019-2-2', '2019-2-5')
@@ -168,14 +168,14 @@ describe 'available_rooms_given_date' do
   it 'if a room has a start date equal to the queried date, it IS NOT included in the available rooms' do
     date_range = Hotel::DateRange.new('2019-2-2', '2019-2-6')
     hotel.make_reservation(date_range)
-    expect(hotel.available_rooms_given_date('2019-2-2').length).must_equal 4
+    expect(hotel.available_rooms_given_date(Date.parse('2019-2-2')).length).must_equal 4
   end
   it 'does not include rooms set aside in blocks in the available rooms' do
     first_date_range = Hotel::DateRange.new('2019-3-2', '2019-3-5')
     second_date_range = Hotel::DateRange.new('2019-3-1', '2019-3-10')
     hotel.make_reservation(first_date_range)
     hotel.make_room_block(3, second_date_range)
-    expect(hotel.available_rooms_given_date('2019-3-3').length).must_equal 1
+    expect(hotel.available_rooms_given_date(Date.parse('2019-3-3')).length).must_equal 1
   end
 end
 
@@ -222,7 +222,6 @@ describe 'list_reservations_given_date' do
     hotel.make_reservation(third_date_range)
     hotel.make_reservation(fourth_date_range)
     hotel.make_reservation(fifth_date_range)
-    expect(hotel.list_reservations_given_date('2019-2-4')).must_be_kind_of Array
     expect(hotel.list_reservations_given_date('2019-3-5').length).must_equal 2
     expect(hotel.list_reservations_given_date('2019-2-4')).must_equal [1, 2, 3]
   end

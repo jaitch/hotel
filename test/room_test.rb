@@ -15,7 +15,7 @@ describe 'is_available_on_date?' do
     room = Hotel::Room.new(1)
     date_range = Hotel::DateRange.new('2019-02-01', '2019-02-07')
     room.occupied_date_ranges << date_range
-    expect(room.is_available_on_date?('2019-02-03')).must_equal false
+    expect(room.is_available_on_date?(Date.parse('2019-02-03'))).must_equal false
   end
 end
 
@@ -52,7 +52,7 @@ describe 'is_available_for_date_range?' do
     date_range = Hotel::DateRange.new('2019-02-01', '2019-02-07')
     second_date_range = Hotel::DateRange.new('2019-2-3', '2019-2-10')
     room.blocks << date_range
-    expect(room.is_within_a_block?(second_date_range)).must_equal false
+    expect(room.is_available_for_date_range?(second_date_range)).must_equal false
   end
 end
 

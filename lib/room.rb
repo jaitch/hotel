@@ -13,7 +13,6 @@ module Hotel
     end
 
     def is_available_on_date? date_sought
-      date_sought = Date.parse(date_sought.to_s)
       if @occupied_date_ranges.length == 0
         return true
       else
